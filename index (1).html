@@ -1,0 +1,655 @@
+<!DOCTYPE html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>SELARAS – Prototipe Interaktif</title>
+<meta name="description" content="Prototipe SELARAS: sistem informasi perencanaan tanam berbasis kebutuhan menu MBG. IYEEA 2026.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23CDEBD8'/%3E%3Ctext x='16' y='22' font-family='Arial' font-weight='800' font-size='17' fill='%232F6B4F' text-anchor='middle'%3ES%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Inter,Arial,sans-serif;color:#24342B}
+.screen{background:#F8FBF7;overflow:hidden;position:relative}
+.desk{width:1280px;height:800px;display:flex}
+.mob{width:375px;height:780px;display:flex;flex-direction:column;border-radius:28px;border:1px solid #DCE7DF}
+.side{width:236px;background:#fff;border-right:1px solid #E3ECE5;padding:24px 16px;display:flex;flex-direction:column;gap:6px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;color:#2F6B4F;letter-spacing:.5px}
+.mark{width:34px;height:34px;border-radius:10px;background:#CDEBD8;display:flex;align-items:center;justify-content:center;color:#2F6B4F;font-weight:800;font-size:17px}
+.org{font-size:12.5px;color:#6A7D72;margin:6px 0 18px;line-height:1.4}
+.nav{padding:10px 12px;border-radius:10px;font-size:14px;color:#4A5D52}
+.nav.on{background:#CDEBD8;color:#1E4A35;font-weight:600}
+.user{margin-top:auto;display:flex;gap:10px;align-items:center;padding:10px;border-radius:12px;background:#F3F8F4;font-size:12.5px}
+.av{width:34px;height:34px;border-radius:50%;background:#FAD9C1;color:#7A3E17;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px}
+.main{flex:1;padding:28px 32px;display:flex;flex-direction:column;gap:18px}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px}
+h1{font-size:24px;font-weight:700;color:#24342B}
+.sub{font-size:13.5px;color:#6A7D72;margin-top:4px}
+.btn{background:#2F6B4F;color:#fff;border-radius:10px;padding:11px 18px;font-weight:600;font-size:14px;white-space:nowrap}
+.btn2{background:#fff;color:#2F6B4F;border:1.5px solid #2F6B4F;border-radius:10px;padding:10px 16px;font-weight:600;font-size:14px;white-space:nowrap}
+.row{display:flex;gap:16px}
+.kpi{flex:1;border-radius:16px;padding:16px 18px}
+.kpi .l{font-size:13px}.kpi .v{font-size:30px;font-weight:700;margin-top:4px}.kpi .n{font-size:12.5px;margin-top:2px;font-weight:600}
+.k1{background:#CDEBD8;color:#1E4A35}.k2{background:#E3EFDF;color:#2E5226}.k3{background:#FBF1C7;color:#6B5310}.k4{background:#FAD9C1;color:#7A3E17}
+.card{background:#fff;border:1px solid #E3ECE5;border-radius:16px;padding:18px 20px}
+.card h2{font-size:16px;font-weight:700;margin-bottom:12px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th{text-align:left;font-size:12.5px;color:#6A7D72;font-weight:600;padding:8px 10px;border-bottom:1px solid #E3ECE5}
+td{padding:11px 10px;border-bottom:1px solid #EEF3EF}
+.pill{display:inline-block;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600}
+.ok{background:#CDEBD8;color:#1E4A35}.wait{background:#FBF1C7;color:#6B5310}.risk{background:#FAD9C1;color:#7A3E17}.info{background:#E1ECF5;color:#2B4D69}
+.bar{height:9px;background:#EEF3EF;border-radius:6px;overflow:hidden;margin-bottom:3px}.bar b{display:block;height:100%;background:#7FBF97;border-radius:6px}
+.bar b.w{background:#E9CF6E}
+.banner{background:#E8F5EC;border:1px solid #CDEBD8;color:#1E4A35;border-radius:12px;padding:11px 16px;font-size:13.5px}
+.steps{display:flex;gap:8px}.st{flex:1;padding:10px 12px;border-radius:12px;background:#fff;border:1px solid #E3ECE5;font-size:12.5px;color:#6A7D72}
+.st b{display:block;color:#24342B;font-size:13px}.st.on{background:#CDEBD8;border-color:#B7D3B0}.st.on b{color:#1E4A35}
+.demo{position:absolute;right:16px;bottom:10px;font-size:11px;color:#9AAAA1}
+.lbl{font-size:12.5px;color:#6A7D72;margin-bottom:6px}
+.inp{border:1px solid #DCE7DF;border-radius:10px;padding:11px 14px;font-size:14px;background:#fff}
+.drop{border:2px dashed #B7D3B0;border-radius:14px;background:#F3F8F4;padding:26px;text-align:center;color:#4A5D52;font-size:14px}
+.gantt{display:grid;grid-template-columns:190px repeat(8,1fr);row-gap:10px;align-items:center;font-size:13.5px}
+.gh{font-size:12px;color:#6A7D72;font-weight:600;text-align:center}
+.seg{height:28px;border-radius:8px;font-size:12px;font-weight:600;display:flex;align-items:center;justify-content:center}
+.t{background:#E3EFDF;color:#2E5226}.p{background:#7FBF97;color:#173B2A}
+.hb{display:flex;align-items:center;gap:12px;font-size:13.5px;margin:9px 0}.hb span{width:150px}.hb .bar{flex:1;height:14px;position:relative;overflow:visible;margin:0}
+.tg{position:absolute;left:30%;top:-4px;bottom:-4px;border-left:2px dashed #C0704A}
+/* mobile */
+.mh{background:#2F6B4F;color:#fff;padding:20px 18px 16px}
+.mh .t1{font-size:17px;font-weight:700}.mh .t2{font-size:12.5px;color:#CDEBD8;margin-top:3px}
+.mb{flex:1;padding:14px;display:flex;flex-direction:column;gap:12px;font-size:14px}
+.mc{background:#fff;border:1px solid #E3ECE5;border-radius:14px;padding:12px 14px}
+.ck{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #EEF3EF;font-size:14px}
+.box{width:22px;height:22px;border-radius:6px;background:#CDEBD8;color:#1E4A35;font-size:13px;font-weight:800;display:flex;align-items:center;justify-content:center}
+.box.w{background:#FBF1C7;color:#6B5310}
+.ph{display:flex;gap:8px}.ph div{flex:1;height:64px;border-radius:10px;background:#B7D3B0;display:flex;align-items:flex-end;padding:5px 8px;font-size:11px;color:#1E4A35}
+.wa{background:#EFEAE2}
+.wah{background:#2F6B4F;color:#fff;padding:16px;display:flex;gap:10px;align-items:center}
+.wab{flex:1;padding:12px;display:flex;flex-direction:column;gap:9px;font-size:14px;line-height:1.45}
+.msg{background:#fff;border-radius:12px;padding:9px 12px;max-width:88%}
+.me{background:#D9F2E1;align-self:flex-end}
+.tm{font-size:10.5px;color:#8A9A91;text-align:right;margin-top:2px}
+.day{align-self:center;background:#E3EEF3;font-size:11.5px;padding:3px 10px;border-radius:8px;color:#55666E}
+.wai{background:#F5F5F2;padding:10px;display:flex;gap:8px;align-items:center}
+.wai .f{flex:1;background:#fff;border-radius:22px;padding:10px 14px;color:#9AAAA1;font-size:13.5px}
+.wai .s{width:40px;height:40px;border-radius:50%;background:#2F6B4F}
+/* style guide */
+.guide{width:1280px;height:800px;padding:48px;display:flex;flex-direction:column;gap:26px;background:#F8FBF7}
+.sw{display:flex;gap:18px}.sw div{flex:1}.sw .c{height:120px;border-radius:16px;border:1px solid #E3ECE5}
+.sw .h{font-family:monospace;font-size:14px;margin-top:8px}.sw .r{font-size:13px;color:#6A7D72}
+
+.toast{position:absolute;right:28px;bottom:30px;background:#24342B;color:#fff;border-radius:12px;padding:12px 16px;font-size:13.5px;display:flex;gap:10px;align-items:center;z-index:5;max-width:420px}
+.toast .ic{width:22px;height:22px;border-radius:50%;background:#CDEBD8;color:#1E4A35;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;flex:none}
+.toast.t2{bottom:86px}
+.mtoast{position:absolute;left:16px;right:16px;bottom:22px;background:#24342B;color:#fff;border-radius:12px;padding:12px 14px;font-size:13.5px;display:flex;gap:10px;align-items:center}
+.mtoast .ic{width:22px;height:22px;border-radius:50%;background:#CDEBD8;color:#1E4A35;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;flex:none}
+.qr{display:flex;flex-direction:column;gap:8px;padding:0 12px 10px;align-items:flex-end}
+.qr span{background:#fff;border:1.5px solid #2F6B4F;color:#2F6B4F;border-radius:20px;padding:8px 16px;font-size:14px;font-weight:600}
+.login-l{width:540px;background:#CDEBD8;padding:48px;display:flex;flex-direction:column;gap:22px;color:#1E4A35}
+.login-r{flex:1;padding:56px 64px;display:flex;flex-direction:column;gap:18px;justify-content:center}
+.roles{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.role{background:#fff;border:1px solid #E3ECE5;border-radius:16px;padding:16px 18px;display:flex;gap:14px;align-items:flex-start}
+.role .ri{width:42px;height:42px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px;flex:none}
+.role b{font-size:15px;display:block;margin-bottom:3px}.role div div{font-size:13px;color:#6A7D72;line-height:1.4}
+.stat{background:#fff;border-radius:14px;padding:12px 14px;flex:1}.stat .v{font-size:20px;font-weight:800;color:#2F6B4F}.stat .l{font-size:12px;color:#4A5D52;margin-top:2px;line-height:1.35}
+
+.alert{background:#FFF4EC;border:1px solid #FAD9C1;color:#7A3E17;border-radius:14px;padding:14px 18px;display:flex;gap:14px;align-items:flex-start}
+.alert .ai{width:34px;height:34px;border-radius:10px;background:#FAD9C1;color:#7A3E17;font-weight:800;font-size:17px;display:flex;align-items:center;justify-content:center;flex:none}
+.alert b{font-size:15px}.alert .d{font-size:13.5px;line-height:1.5;margin-top:3px;color:#5E3415}
+.opt{flex:1;background:#fff;border:1px solid #E3ECE5;border-radius:16px;padding:16px 18px;display:flex;flex-direction:column;gap:8px;font-size:13.5px;color:#4A5D52;line-height:1.45}
+.opt.rec{border:2px solid #2F6B4F;background:#FBFDFB}
+.opt .h{font-size:15px;font-weight:700;color:#24342B}
+.opt .k{display:flex;justify-content:space-between;border-top:1px solid #EEF3EF;padding-top:6px}
+.opt .k b{color:#24342B}
+.opt .btn,.opt .btn2{text-align:center;margin-top:auto}
+.tag{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11.5px;font-weight:700;background:#2F6B4F;color:#fff;align-self:flex-start}
+.empty{flex:1;background:#fff;border:1px dashed #B7D3B0;border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;text-align:center;padding:40px}
+.empty .ill{width:96px;height:96px;border-radius:28px;background:#CDEBD8;display:flex;align-items:center;justify-content:center;font-size:40px;font-weight:800;color:#2F6B4F}
+.empty h2{font-size:20px;font-weight:700}.empty .sub{max-width:520px;line-height:1.55}
+.chk{display:flex;gap:12px;align-items:flex-start;background:#fff;border:1px solid #E3ECE5;border-radius:12px;padding:12px 14px;font-size:13.5px;color:#4A5D52;line-height:1.45}
+.chk .n{width:26px;height:26px;border-radius:50%;background:#CDEBD8;color:#1E4A35;font-weight:800;font-size:13px;display:flex;align-items:center;justify-content:center;flex:none}
+.chk b{color:#24342B}
+.err{background:#FFF4EC;border-color:#FAD9C1}.err .n{background:#FAD9C1;color:#7A3E17}
+.ntf{display:flex;gap:14px;padding:14px 4px;border-bottom:1px solid #EEF3EF;align-items:flex-start;font-size:13.5px;color:#4A5D52;line-height:1.45}
+.ntf .ni{width:36px;height:36px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:13px;flex:none}
+.ntf b{color:#24342B;font-size:14px}.ntf .w{margin-left:auto;font-size:12px;color:#9AAAA1;white-space:nowrap}
+.ntf.unread{background:#F6FBF7;border-radius:10px;padding-left:10px;padding-right:10px}
+.chips{display:flex;gap:8px}.chip{padding:7px 14px;border-radius:20px;border:1px solid #DCE7DF;background:#fff;font-size:13px;font-weight:600;color:#4A5D52}.chip.on{background:#2F6B4F;border-color:#2F6B4F;color:#fff}
+.badge{display:inline-block;min-width:20px;padding:1px 7px;border-radius:10px;background:#C0704A;color:#fff;font-size:11.5px;font-weight:700;margin-left:6px;text-align:center}
+.prof{display:flex;gap:16px;align-items:center}
+.prof .pa{width:56px;height:56px;border-radius:16px;background:#FAD9C1;color:#7A3E17;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:20px}
+.mini{display:flex;align-items:flex-end;gap:10px;height:120px;padding-top:6px}
+.mini div{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;font-size:11.5px;color:#6A7D72}
+.mini i{display:block;width:100%;border-radius:6px 6px 0 0;background:#7FBF97}
+.mini i.w{background:#E9CF6E}
+.nw td{white-space:nowrap}
+
+.tiles{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.tile{border-radius:12px;padding:12px 14px;min-height:128px;display:flex;flex-direction:column;gap:4px;font-size:12.5px}
+.tile b{font-size:14.5px}.tile .v{font-size:20px;font-weight:800;margin-top:auto}
+.l0{background:#F3F8F4;color:#6A7D72;border:1px dashed #DCE7DF}.l1{background:#E3EFDF;color:#2E5226}.l2{background:#B7D3B0;color:#1E4A35}.l3{background:#7FBF97;color:#173B2A}
+.lg{display:flex;gap:14px;font-size:12px;color:#6A7D72;align-items:center}.lg i{display:inline-block;width:14px;height:14px;border-radius:4px;margin-right:6px;vertical-align:-2px}
+.wk{font-size:12px;font-weight:700;color:#6A7D72;padding:10px 10px 4px;background:#F8FBF7}
+
+html,body{margin:0;height:100%}
+body.proto{padding:0;display:block;width:auto;background:#E9F0EB;font-family:Inter,Arial,sans-serif;overflow:hidden}
+.pt-top{height:58px;background:#fff;border-bottom:1px solid #DCE7DF;display:flex;align-items:center;gap:14px;padding:0 18px}
+.pt-brand{display:flex;align-items:center;gap:9px;font-weight:800;color:#2F6B4F;font-size:16px;white-space:nowrap;cursor:pointer}
+.pt-brand small{font-weight:500;color:#6A7D72;font-size:12.5px}
+.pt-steps{display:flex;gap:6px;flex:1;overflow-x:auto;scrollbar-width:none}
+.pt-steps button{border:1px solid #DCE7DF;background:#fff;color:#4A5D52;border-radius:20px;padding:6px 12px;font:600 12.5px Inter,Arial,sans-serif;white-space:nowrap;cursor:pointer}
+.pt-steps button.on{background:#2F6B4F;border-color:#2F6B4F;color:#fff}
+.pt-steps button.done{background:#CDEBD8;border-color:#B7D3B0;color:#1E4A35}
+.pt-nav{display:flex;gap:8px}
+.pt-nav button{border-radius:10px;padding:9px 14px;font:600 13.5px Inter,Arial,sans-serif;cursor:pointer;border:1.5px solid #2F6B4F;background:#fff;color:#2F6B4F}
+.pt-nav button.pri{background:#2F6B4F;color:#fff}
+.pt-nav button:disabled{opacity:.35;cursor:default}
+.pt-hint{min-height:42px;display:flex;align-items:center;gap:10px;padding:8px 20px;background:#F8FBF7;border-bottom:1px solid #E3ECE5;font-size:13.5px;color:#24342B}
+.pt-hint .dot{width:8px;height:8px;border-radius:50%;background:#7FBF97;flex:none}
+.mob-note{display:none}.pt-hint .di{margin-left:auto;color:#9AAAA1;font-size:12px;white-space:nowrap}
+.pt-stage{position:absolute;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;gap:36px}
+.pt-wrap{position:relative;flex:none}
+.pt-wrap>.pscreen{position:absolute;left:0;top:0;transform-origin:0 0;box-shadow:0 10px 40px rgba(36,52,43,.12)}
+.pscreen{display:none}.pscreen.show{display:flex}
+.pt-side{width:300px;background:#fff;border:1px solid #E3ECE5;border-radius:18px;padding:22px;display:none;flex-direction:column;gap:12px}
+.pt-side .r{font-size:12.5px;font-weight:700;color:#2F6B4F;text-transform:none}
+.pt-side .t{font-size:14.5px;line-height:1.55;color:#24342B}
+.pt-side .btn{text-align:center;cursor:pointer}
+[data-act],[data-role],.nav,.btn,.btn2,.qr span,.ck,.logo{cursor:pointer}
+.btn:hover{filter:brightness(1.08)}.role:hover{border-color:#B7D3B0;background:#FBFDFB}
+.attn{animation:pulse 1.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{box-shadow:0 0 0 0 rgba(47,107,79,.0)}50%{box-shadow:0 0 0 6px rgba(127,191,151,.55)}}
+.pt-toasts{position:fixed;left:50%;bottom:22px;transform:translateX(-50%);display:flex;flex-direction:column;gap:8px;align-items:center;z-index:50;pointer-events:none}
+.pt-toast{background:#24342B;color:#fff;border-radius:12px;padding:12px 16px;font-size:14px;display:flex;gap:10px;align-items:center;box-shadow:0 8px 24px rgba(0,0,0,.18);animation:tin .25s ease-out}
+.pt-toast .ic{width:22px;height:22px;border-radius:50%;background:#CDEBD8;color:#1E4A35;font-weight:800;font-size:12px;display:flex;align-items:center;justify-content:center;flex:none}
+.pt-toast.info .ic{background:#FBF1C7;color:#6B5310}
+@keyframes tin{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.msg.new{animation:tin .3s ease-out}
+@media (max-width:760px){.mob-note{display:inline;margin-left:auto;color:#9AAAA1;font-size:11.5px;white-space:nowrap}.pt-brand small,.pt-hint .di{display:none}.pt-side{display:none!important}.pt-nav button{padding:8px 10px}}
+
+.login{display:flex;background:#F8FBF7}.lg-left{width:560px;background:#CDEBD8;padding:64px;display:flex;flex-direction:column;position:relative}
+.lg-left .logo{display:flex;align-items:center;gap:12px;font-size:22px;font-weight:800;color:#2F6B4F}.lg-left .mark{background:#fff}
+.lg-left h2{font-size:38px;line-height:1.2;color:#1E4A35;margin-top:96px}.lg-left p{font-size:16px;line-height:1.55;color:#1E4A35;margin-top:16px;max-width:420px}
+.lg-foot{margin-top:auto;background:#fff;border-radius:14px;padding:18px 20px;font-size:13px;font-weight:500;color:#6A7D72}
+.lg-right{flex:1;position:relative;display:flex;align-items:center;justify-content:center}
+.lg-back{position:absolute;left:60px;top:40px;border:1px solid #DCE7DF;background:#fff;border-radius:18px;padding:8px 16px;font-size:13.5px;font-weight:600;color:#2F6B4F;cursor:pointer}
+.lg-card{width:460px;background:#fff;border:1px solid #E3ECE5;border-radius:20px;padding:40px;display:flex;flex-direction:column}
+.lg-head{display:flex;gap:16px;align-items:center;margin-bottom:22px}.lg-av{width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:15px}
+.lg-head b{display:block;font-size:22px}.lg-head span{font-size:13.5px;color:#6A7D72}
+.login label,.login-m label{font-size:13px;font-weight:600;color:#4A5D52;margin:8px 0 6px}
+.lg-in{background:#F8FBF7;border:1px solid #DCE7DF;border-radius:10px;padding:13px 16px;font-size:14.5px;display:flex;justify-content:space-between;margin-bottom:6px}
+.lg-in.pw{font-weight:700;color:#4A5D52;letter-spacing:1px}.lg-in em,.lg-row em{font-style:normal;font-size:13px;font-weight:600;color:#2F6B4F;letter-spacing:0}
+.lg-row{display:flex;justify-content:space-between;align-items:center;font-size:13.5px;color:#4A5D52;margin:8px 0 16px}
+.lg-row i{display:inline-flex;width:18px;height:18px;border-radius:5px;background:#2F6B4F;color:#fff;font-style:normal;font-size:12px;align-items:center;justify-content:center;margin-right:8px}
+.lg-btn{text-align:center;padding:14px;font-size:15px}.lg-or{text-align:center;font-size:12.5px;color:#9AAAA1;margin:12px 0}
+.lg-note{margin-top:16px;background:#E1ECF5;color:#2B4D69;border-radius:10px;padding:10px 14px;font-size:12px;line-height:1.5}
+.login-m{background:#F8FBF7}.lgm-h{height:250px;padding:28px 24px!important}.lgm-logo{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:800;color:#fff;margin:18px 0 18px}.lgm-logo .mark{background:#fff;color:#2F6B4F}
+.lgm-h .t1{font-size:24px!important}.lgm-h .t2{margin-top:6px}
+.lgm-card{margin:-24px 16px 0;background:#fff;border:1px solid #E3ECE5;border-radius:18px;padding:22px 20px;display:flex;flex-direction:column;gap:2px;position:relative}
+.lgm-card .lg-btn{margin-top:10px}
+
+.pt-flow{border:1px solid #DCE7DF;border-radius:10px;padding:7px 10px;font:600 13px Inter,Arial,sans-serif;color:#1E4A35;background:#F3F8F4;cursor:pointer;max-width:210px}
+.nav.soon{opacity:.5}.nav.soon small{font-size:10.5px;color:#6A7D72;margin-left:4px}
+.mback{position:absolute;right:12px;top:16px;height:32px;min-width:32px;padding:0 10px;border-radius:16px;background:rgba(255,255,255,.2);color:#fff;font:600 13px Inter,Arial,sans-serif;display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:4}
+.mback:hover{background:rgba(255,255,255,.32)}
+.wah,.mh{position:relative}
+[data-goto],[data-toast]{cursor:pointer}.ntf:hover{background:#F3F8F4;border-radius:10px}
+.pill[data-goto]{outline:2px solid transparent}.pill[data-goto]:hover{outline-color:#C0704A}
+@media (max-width:760px){.pt-top{flex-wrap:wrap;height:auto;padding:8px 10px;gap:8px}.pt-steps{display:none}.pt-brand{flex:1}.pt-flow{order:3;flex:1 1 100%;max-width:none}.pt-hint{font-size:12.5px;padding:6px 12px}}
+</style></head><body class="proto">
+<div class="pt-top"><div class="pt-brand" id="brand"><div class="mark" style="width:30px;height:30px;font-size:15px;border-radius:9px">S</div>SELARAS <small>Prototipe interaktif</small></div>
+<select class="pt-flow" id="flow" aria-label="Pilih alur"></select>
+<div class="pt-steps" id="steps"></div><div class="pt-nav"><button id="prev">Kembali</button><button id="next" class="pri">Berikutnya</button></div></div>
+<div class="pt-hint"><span class="dot"></span><span id="hint"></span><span class="di">Data ilustrasi · IYEEA 2026</span><span class="mob-note">Tampilan terbaik di laptop</span></div>
+<div class="pt-stage" id="stage"><div class="pt-wrap" data-k="masuk"><div class="screen pscreen desk" data-key="masuk" data-name="08 Masuk – Pilih Peran">
+<div class="login-l">
+<div class="logo" style="font-size:26px"><div class="mark" style="width:44px;height:44px;font-size:21px;border-radius:12px;background:#fff">S</div>SELARAS</div>
+<div><div style="font-size:34px;font-weight:800;line-height:1.2;color:#1E4A35">Menu dan ladang<br>berjalan selaras.</div>
+<div style="font-size:15px;line-height:1.6;margin-top:14px;color:#2E5226">SELARAS menerjemahkan rencana menu SPPG menjadi rencana tanam petani lokal, sehingga sayur dan buah untuk Makan Bergizi Gratis dapat dipasok dari desa sekitar dapur.</div></div>
+<div style="display:flex;gap:10px"><div class="stat"><div class="v">4,4 ton</div><div class="l">kebutuhan sayur per SPPG per bulan</div></div><div class="stat"><div class="v">0,34 ha</div><div class="l">lahan bayam untuk satu SPPG</div></div><div class="stat"><div class="v">&ge; 30%</div><div class="l">target belanja dari petani lokal</div></div></div>
+<div style="margin-top:auto;font-size:12.5px;color:#2E5226">Prototipe gagasan · IYEEA 2026 · Data ilustrasi</div></div>
+<div class="login-r">
+<div><h1 style="font-size:28px">Masuk ke SELARAS</h1><div class="sub" style="font-size:14.5px">Pilih peran untuk melihat tampilan masing-masing pengguna</div></div>
+<div class="roles">
+<div class="role" data-role="sppg"><div class="ri" style="background:#CDEBD8;color:#1E4A35">SP</div><div><b>SPPG</b><div>Unggah rencana menu, lihat proyeksi kebutuhan, terima bahan</div></div></div>
+<div class="role" data-role="koperasi"><div class="ri" style="background:#E3EFDF;color:#2E5226">KD</div><div><b>Koperasi Desa</b><div>Bagi rencana tanam, kelola kontrak dan pembayaran ke petani</div></div></div>
+<div class="role" data-role="penyuluh"><div class="ri" style="background:#FBF1C7;color:#6B5310">PY</div><div><b>Penyuluh</b><div>Dampingi budidaya dan periksa mutu sebelum panen</div></div></div>
+<div class="role" data-role="dinas"><div class="ri" style="background:#E1ECF5;color:#2B4D69">DP</div><div><b>Dinas Pertanian</b><div>Pantau serapan pangan lokal dan tindak lanjut</div></div></div>
+</div>
+<div class="role" data-role="petani" style="background:#FFFBF0;border-color:#FBF1C7;align-items:center"><div class="ri" style="background:#FAD9C1;color:#7A3E17">PT</div><div style="flex:1"><b>Petani</b><div>Tidak perlu aplikasi: tawaran kontrak dan info pembayaran dikirim lewat WhatsApp</div></div><span class="btn2" style="padding:8px 14px;font-size:13px">Lihat tampilan WhatsApp</span></div>
+<div style="display:flex;gap:12px;align-items:center;margin-top:6px"><span class="btn" data-go="demo" style="padding:13px 22px;font-size:15px">Mulai demo alur lengkap</span><span class="sub" style="margin:0">12 langkah · sekitar 3 menit</span></div>
+</div></div></div>
+<div class="pt-wrap" data-k="menu"><div class="screen pscreen desk" data-key="menu" data-name="01 SPPG – Unggah Rencana Menu">
+<div class="side"><div class="logo"><div class="mark">S</div>SELARAS</div><div class="org">SPPG Lowokwaru 1<br>Kota Malang</div>
+<div class="nav">Dasbor Proyeksi</div><div class="nav on">Rencana Menu</div><div class="nav">Kontrak Pasok</div><div class="nav">Penerimaan &amp; Mutu</div><div class="nav">Laporan Serapan</div>
+<div class="user"><div class="av">AN</div><div><b>Ahli Gizi</b><br><span style="color:#6A7D72">SPPG Lowokwaru 1</span></div></div></div>
+<div class="main">
+<div class="top"><div><h1>Unggah Rencana Menu Bulanan</h1><div class="sub">Rencana menu disusun paling lambat satu bulan sebelumnya, sesuai petunjuk teknis MBG</div></div><span class="btn" data-act="proses">Proses Proyeksi</span></div>
+<div class="steps"><div class="st on"><b>1 · Unggah menu</b>Januari 2027</div><div class="st"><b>2 · Periksa porsi</b>Standar berat bersih</div><div class="st"><b>3 · Proyeksi</b>Kebutuhan komoditas</div><div class="st"><b>4 · Kirim</b>Ke koperasi mitra</div></div>
+<div class="row" style="flex:1">
+<div class="card" style="flex:1;display:flex;flex-direction:column;gap:14px">
+<div><div class="lbl">Periode layanan</div><div class="inp">Januari 2027 · 22 hari layanan</div></div>
+<div><div class="lbl">Jumlah porsi per hari</div><div class="inp">2.000 porsi</div></div>
+<div><div class="lbl">Berkas rencana menu</div><div class="drop"><b style="color:#2F6B4F">Menu_Januari_2027.xlsx</b><br>Terunggah · 22 hari · 4 siklus menu mingguan</div></div>
+<div class="banner">Format sesuai templat SPPG. Sistem membaca standar porsi berat bersih bahan pangan saat akan dimasak.</div></div>
+<div class="card" style="flex:1.25"><h2>Pratinjau menu minggu pertama</h2>
+<table><tr><th>Hari</th><th>Lauk</th><th>Sayur (100 g)</th><th>Buah</th></tr>
+<tr><td>Senin</td><td>Ayam suwir</td><td>Tumis bayam</td><td>Pisang</td></tr>
+<tr><td>Selasa</td><td>Telur balado</td><td>Cah kangkung</td><td>Jeruk</td></tr>
+<tr><td>Rabu</td><td>Ikan goreng</td><td>Sayur buncis</td><td>Semangka</td></tr>
+<tr><td>Kamis</td><td>Tempe bacem</td><td>Sop wortel &amp; sawi</td><td>Pisang</td></tr>
+<tr><td>Jumat</td><td>Daging sapi</td><td>Bening bayam</td><td>Melon</td></tr></table>
+<div class="sub" style="margin-top:12px">Komoditas sayur terdeteksi: bayam, kangkung, buncis, wortel, sawi</div></div>
+</div></div><div class="demo">Data ilustrasi</div></div></div>
+<div class="pt-wrap" data-k="proyeksi"><div class="screen pscreen desk" data-key="proyeksi" data-name="02 SPPG – Dasbor Proyeksi Kebutuhan">
+<div class="side"><div class="logo"><div class="mark">S</div>SELARAS</div><div class="org">SPPG Lowokwaru 1<br>Kota Malang</div>
+<div class="nav on">Dasbor Proyeksi</div><div class="nav">Rencana Menu</div><div class="nav">Kontrak Pasok</div><div class="nav">Penerimaan &amp; Mutu</div><div class="nav">Laporan Serapan</div>
+<div class="user"><div class="av">AN</div><div><b>Ahli Gizi</b><br><span style="color:#6A7D72">SPPG Lowokwaru 1</span></div></div></div>
+<div class="main">
+<div class="top"><div><h1>Proyeksi Kebutuhan · Januari 2027</h1><div class="sub">Dihitung otomatis dari rencana menu bulanan dan standar porsi berat bersih</div></div><div style="display:flex;gap:10px"><span class="btn2">Unduh Proyeksi</span><span class="btn" data-act="kirim-koperasi">Kirim ke Koperasi</span></div></div>
+<div class="banner">Rencana menu Januari 2027 diunggah 2 Desember 2026 · proyeksi diteruskan ke 2 koperasi mitra · batas kontrak 10 Desember 2026</div>
+<div class="row">
+<div class="kpi k1"><div class="l">Porsi per hari layanan</div><div class="v">2.000</div><div class="n">22 hari layanan</div></div>
+<div class="kpi k2"><div class="l">Kebutuhan sayur (100 g/porsi)</div><div class="v">4,4 ton</div><div class="n">± 1 ton per minggu</div></div>
+<div class="kpi k3"><div class="l">Terkontrak dengan petani lokal</div><div class="v">3,6 ton</div><div class="n">82% dari kebutuhan</div></div>
+<div class="kpi k4"><div class="l">Sisa dibeli via Loka MBG</div><div class="v">0,8 ton</div><div class="n">Wortel dan sawi</div></div></div>
+<div class="card" style="flex:1"><h2>Kebutuhan per komoditas</h2>
+<table><tr><th>Komoditas</th><th>Kebutuhan</th><th style="width:220px">Terkontrak</th><th>Koperasi pemasok</th><th>Jadwal kirim</th><th>Status</th></tr>
+<tr><td><b>Bayam</b></td><td>1,1 ton</td><td><div class="bar"><b style="width:100%"></b></div>1,1 ton</td><td>KDMP Sumber Makmur</td><td>Senin &amp; Kamis</td><td><span class="pill ok">Terkontrak</span></td></tr>
+<tr><td><b>Kangkung</b></td><td>0,8 ton</td><td><div class="bar"><b style="width:100%"></b></div>0,8 ton</td><td>KDMP Sumber Makmur</td><td>Selasa &amp; Jumat</td><td><span class="pill ok">Terkontrak</span></td></tr>
+<tr><td><b>Buncis</b></td><td>0,8 ton</td><td><div class="bar"><b style="width:100%"></b></div>0,8 ton</td><td>KDMP Maju Bersama</td><td>Rabu</td><td><span class="pill ok">Terkontrak</span></td></tr>
+<tr><td><b>Wortel</b></td><td>1,0 ton</td><td><div class="bar"><b class="w" style="width:60%"></b></div>0,6 ton</td><td>KDMP Maju Bersama</td><td>Senin</td><td><span class="pill wait">Menunggu petani</span></td></tr>
+<tr><td><b>Sawi</b></td><td>0,7 ton</td><td><div class="bar"><b class="w" style="width:43%"></b></div>0,3 ton</td><td>KDMP Sumber Makmur</td><td>Kamis</td><td><span class="pill wait">Menunggu petani</span></td></tr>
+<tr><td><b>Total</b></td><td><b>4,4 ton</b></td><td><b>3,6 ton</b></td><td colspan="3" style="color:#6A7D72">Sisa 0,8 ton otomatis diajukan sebagai pesanan di Loka MBG</td></tr></table></div>
+</div><div class="demo">Data ilustrasi</div></div></div>
+<div class="pt-wrap" data-k="rencana-tanam"><div class="screen pscreen desk" data-key="rencana-tanam" data-name="03 Koperasi – Rencana Tanam Bersama">
+<div class="side"><div class="logo"><div class="mark">S</div>SELARAS</div><div class="org">KDMP Sumber Makmur<br>Kabupaten Malang</div>
+<div class="nav">Permintaan SPPG</div><div class="nav on">Rencana Tanam Bersama</div><div class="nav">Kelompok Tani</div><div class="nav">Kontrak &amp; Pembayaran</div><div class="nav">Pengiriman</div>
+<div class="user"><div class="av">BS</div><div><b>Pengurus Koperasi</b><br><span style="color:#6A7D72">KDMP Sumber Makmur</span></div></div></div>
+<div class="main">
+<div class="top"><div><h1>Rencana Tanam Bersama · Bayam</h1><div class="sub">Permintaan SPPG Lowokwaru 1 untuk Januari 2027 · tanam bergiliran agar panen setiap minggu</div></div><span class="btn" data-act="kirim-wa">Kirim Tawaran via WhatsApp</span></div>
+<div class="row">
+<div class="card" style="flex:1"><h2>Perhitungan kebutuhan lahan</h2>
+<table><tr><td>Kebutuhan bayam per bulan</td><td style="text-align:right"><b>1,1 ton</b></td></tr>
+<tr><td>Produktivitas acuan</td><td style="text-align:right">3,2 ton/ha</td></tr>
+<tr><td>Luas tanam dibutuhkan</td><td style="text-align:right"><b>0,34 ha</b></td></tr>
+<tr><td>Dibagi 4 gelombang tanam</td><td style="text-align:right">± 0,085 ha · 275 kg</td></tr>
+<tr><td>Harga kontrak (pasti)</td><td style="text-align:right"><b>Rp7.500/kg</b></td></tr></table></div>
+<div class="card" style="flex:1"><h2>Status tawaran kontrak</h2>
+<table><tr><th>Kelompok tani</th><th>Volume</th><th>Penyuluh</th><th>Status</th></tr>
+<tr><td>Poktan Tani Makmur</td><td>275 kg</td><td>Rina S.</td><td><span class="pill ok">Setuju</span></td></tr>
+<tr><td>Poktan Sido Rukun</td><td>275 kg</td><td>Rina S.</td><td><span class="pill ok">Setuju</span></td></tr>
+<tr><td>Poktan Sri Rejeki</td><td>275 kg</td><td>Hadi P.</td><td><span class="pill ok">Setuju</span></td></tr>
+<tr><td>Poktan Ngudi Rejeki</td><td>275 kg</td><td>Hadi P.</td><td><span class="pill ok">Setuju</span></td></tr></table></div></div>
+<div class="card" style="flex:1"><h2>Kalender tanam dan panen per minggu</h2>
+<div class="gantt">
+<div></div><div class="gh">Des 1</div><div class="gh">Des 2</div><div class="gh">Des 3</div><div class="gh">Des 4</div><div class="gh">Jan 1</div><div class="gh">Jan 2</div><div class="gh">Jan 3</div><div class="gh">Jan 4</div>
+<div>Poktan Tani Makmur</div><div class="seg t" style="grid-column:2/6">Tanam dan tumbuh</div><div class="seg p" style="grid-column:6/7">Panen</div><div style="grid-column:7/10"></div>
+<div>Poktan Sido Rukun</div><div></div><div class="seg t" style="grid-column:3/7">Tanam dan tumbuh</div><div class="seg p" style="grid-column:7/8">Panen</div><div style="grid-column:8/10"></div>
+<div>Poktan Sri Rejeki</div><div style="grid-column:2/4"></div><div class="seg t" style="grid-column:4/8">Tanam dan tumbuh</div><div class="seg p" style="grid-column:8/9">Panen</div><div></div>
+<div>Poktan Ngudi Rejeki</div><div style="grid-column:2/5"></div><div class="seg t" style="grid-column:5/9">Tanam dan tumbuh</div><div class="seg p" style="grid-column:9/10">Panen</div></div>
+<div class="sub" style="margin-top:14px">Panen bergiliran: setiap minggu Januari tersedia ± 275 kg bayam segar untuk SPPG.</div></div>
+</div><div class="demo">Data ilustrasi</div></div></div>
+<div class="pt-wrap" data-k="wa-tawaran"><div class="screen pscreen mob wa" data-key="wa-tawaran" data-name="04a Petani – Tawaran Masuk (WhatsApp)"><div class="wah"><div class="mark" style="border-radius:50%">S</div><div><div style="font-weight:700;font-size:15px">SELARAS · KDMP Sumber Makmur</div><div style="font-size:12px;color:#CDEBD8">Akun bisnis resmi</div></div></div>
+<div class="wab"><div class="day">2 Desember 2026</div><div class="msg">Halo Pak Slamet (Poktan Tani Makmur).<br>Ada <b>tawaran kontrak tanam</b>:<br>Komoditas: <b>Bayam</b><br>Volume: <b>275 kg</b><br>Tanam: 2–4 Des · Panen: 5–7 Jan<br>Harga pasti: <b>Rp7.500/kg</b><br>Standar: daun segar, tidak layu, panjang 20–25 cm, bebas hama<br><br>Balas <b>1</b> Setuju · <b>2</b> Tolak · <b>3</b> Tanya penyuluh<div class="tm">08.15</div></div></div>
+<div class="qr"><span data-act="balas-1">1 · Setuju</span><span data-goto="wa-tolak">2 · Tolak</span><span data-toast="Pertanyaan diteruskan ke penyuluh Rina S. lewat WhatsApp">3 · Tanya penyuluh</span></div>
+<div class="wai"><div class="f">Ketik pesan</div><div class="s"></div></div></div></div>
+<div class="pt-wrap" data-k="wa-setuju"><div class="screen pscreen mob wa" data-key="wa-setuju" data-name="04 Petani – Tawaran Kontrak WhatsApp">
+<div class="wah"><div class="mark" style="border-radius:50%">S</div><div><div style="font-weight:700;font-size:15px">SELARAS · KDMP Sumber Makmur</div><div style="font-size:12px;color:#CDEBD8">Akun bisnis resmi</div></div></div>
+<div class="wab"><div class="day">2 Desember 2026</div>
+<div class="msg">Halo Pak Slamet (Poktan Tani Makmur).<br>Ada <b>tawaran kontrak tanam</b>:<br>Komoditas: <b>Bayam</b><br>Volume: <b>275 kg</b><br>Tanam: 2–4 Des · Panen: 5–7 Jan<br>Harga pasti: <b>Rp7.500/kg</b><br>Standar: daun segar, tidak layu, panjang 20–25 cm, bebas hama<br><br>Balas <b>1</b> Setuju · <b>2</b> Tolak · <b>3</b> Tanya penyuluh<div class="tm">08.15</div></div>
+<div class="msg me">1<div class="tm">08.21</div></div>
+<div class="msg">Terima kasih, Pak. Kontrak <b>#BYM-0112</b> tercatat.<br>Penyuluh pendamping: Bu Rina.<br>Pengingat dikirim H-3 panen.<div class="tm">08.21</div></div>
+<div class="day">2 Januari 2027</div>
+<div class="msg">Pengingat: panen bayam kontrak #BYM-0112 tanggal <b>5 Januari</b>. Pemeriksaan mutu oleh penyuluh: <b>3 Januari</b>.<div class="tm">07.00</div></div></div>
+<div class="wai"><div class="f">Ketik pesan</div><div class="s"></div></div></div></div>
+<div class="pt-wrap" data-k="cek-mutu"><div class="screen pscreen mob" data-key="cek-mutu" data-name="05 Penyuluh – Pemeriksaan Mutu Pra-Panen">
+<div class="mh"><div class="t1">Pemeriksaan Mutu Pra-Panen</div><div class="t2">Penyuluh: Rina S. · 3 Januari 2027</div></div>
+<div class="mb">
+<div class="mc"><div style="font-size:12px;color:#6A7D72">Kontrak #BYM-0112 · Poktan Tani Makmur</div><b>Bayam · 275 kg · panen 5 Januari</b></div>
+<div class="mc"><div style="font-size:12px;color:#6A7D72;margin-bottom:4px">Daftar periksa standar mutu</div>
+<div class="ck" data-ck>Warna daun hijau segar<span class="box">✓</span></div>
+<div class="ck" data-ck>Tidak layu atau busuk<span class="box">✓</span></div>
+<div class="ck" data-ck>Panjang tanaman 20–25 cm<span class="box">✓</span></div>
+<div class="ck" data-ck>Bebas hama dan penyakit<span class="box w">!</span></div>
+<div class="ck" data-ck style="border:none">Tidak disemprot 7 hari terakhir<span class="box">✓</span></div>
+<div style="font-size:12px;color:#6A7D72;margin-top:4px">Catatan: bercak daun ringan ± 5% tanaman, disortir saat panen.</div></div>
+<div class="mc"><div style="font-size:12px;color:#6A7D72;margin-bottom:8px">Foto lahan (3)</div><div class="ph"><div>Foto 1</div><div>Foto 2</div><div>Foto 3</div></div></div>
+<div class="mc" style="background:#CDEBD8;border-color:#B7D3B0;color:#1E4A35"><b id="hasilMutu">Hasil: Lolos dengan catatan</b><br>Estimasi panen 280 kg · siap kirim 5 Januari</div>
+<div class="btn" data-act="simpan-mutu" style="text-align:center;padding:14px">Simpan dan Kirim ke Koperasi</div></div></div></div>
+<div class="pt-wrap" data-k="penerimaan"><div class="screen pscreen desk" data-key="penerimaan" data-name="06 SPPG – Penerimaan & Pembayaran (Loka MBG)">
+<div class="side"><div class="logo"><div class="mark">S</div>SELARAS</div><div class="org">SPPG Lowokwaru 1<br>Kota Malang</div>
+<div class="nav">Dasbor Proyeksi</div><div class="nav">Rencana Menu</div><div class="nav">Kontrak Pasok</div><div class="nav on">Penerimaan &amp; Mutu</div><div class="nav">Laporan Serapan</div>
+<div class="user"><div class="av">DW</div><div><b>Kepala Dapur</b><br><span style="color:#6A7D72">SPPG Lowokwaru 1</span></div></div></div>
+<div class="main">
+<div class="top"><div><h1>Penerimaan Bahan · Selasa, 5 Januari 2027</h1><div class="sub">Bahan yang diterima dicocokkan dengan kontrak dan diteruskan ke Loka MBG untuk transaksi</div></div><span class="btn" data-act="konfirmasi" id="btnKonf">Konfirmasi Penerimaan</span></div>
+<div class="row">
+<div class="kpi k1"><div class="l">Pengiriman hari ini</div><div class="v">3</div><div class="n">Semua tepat waktu</div></div>
+<div class="kpi k2"><div class="l">Diterima</div><div class="v">520 kg</div><div class="n">dari 550 kg dipesan</div></div>
+<div class="kpi k3"><div class="l">Ditolak saat cek mutu</div><div class="v">5%</div><div class="n">Daun layu, disortir</div></div>
+<div class="kpi k4"><div class="l">Nilai transaksi</div><div class="v">Rp3,9 jt</div><div class="n">Dibayar via Loka MBG</div></div></div>
+<div class="card" style="flex:1"><h2>Daftar pengiriman</h2>
+<table><tr><th>Kontrak</th><th>Komoditas</th><th>Pemasok</th><th>Dipesan</th><th>Diterima</th><th>Mutu</th><th>Transaksi Loka MBG</th></tr>
+<tr><td>#BYM-0112</td><td>Bayam</td><td>Poktan Tani Makmur · KDMP Sumber Makmur</td><td>275 kg</td><td>270 kg</td><td><span class="pill ok">Lolos</span></td><td><span class="pill info" data-pay>Diproses</span></td></tr>
+<tr><td>#WRT-0108</td><td>Wortel</td><td>Poktan Gemah Ripah · KDMP Maju Bersama</td><td>150 kg</td><td>150 kg</td><td><span class="pill ok">Lolos</span></td><td><span class="pill ok">Dibayar</span></td></tr>
+<tr><td>#SWI-0105</td><td>Sawi</td><td>Poktan Sumber Rejeki · KDMP Sumber Makmur</td><td>125 kg</td><td>100 kg</td><td><span class="pill risk">25 kg ditolak</span></td><td><span class="pill wait" data-pay>Menunggu konfirmasi</span></td></tr></table>
+<div class="banner" style="margin-top:16px">Pembayaran dilakukan di Loka MBG secara non-tunai ke rekening koperasi. Koperasi meneruskan pembayaran ke kelompok tani sesuai kontrak.</div></div>
+</div><div class="demo">Data ilustrasi</div></div></div>
+<div class="pt-wrap" data-k="bayar-petani"><div class="screen pscreen desk" data-key="bayar-petani" data-name="09 Koperasi – Pembayaran ke Petani"><div class="side"><div class="logo"><div class="mark">S</div>SELARAS</div><div class="org">KDMP Sumber Makmur<br>Kabupaten Malang</div>
+<div class="nav">Permintaan SPPG</div><div class="nav">Rencana Tanam Bersama</div><div class="nav">Kelompok Tani</div><div class="nav on">Kontrak &amp; Pembayaran</div><div class="nav">Pengiriman</div>
+<div class="user"><div class="av">BS</div><div><b>Pengurus Koperasi</b><br><span style="color:#6A7D72">KDMP Sumber Makmur</span></div></div></div>
+<div class="main">
+<div class="top"><div><h1>Pembayaran ke Kelompok Tani · Januari 2027</h1><div class="sub">Dana dari Loka MBG diteruskan ke kelompok tani sesuai kontrak</div></div><span class="btn" data-act="teruskan" id="btnTer">Teruskan Pembayaran</span></div>
+<div class="row">
+<div class="kpi k1"><div class="l">Dana masuk dari Loka MBG</div><div class="v">Rp2,78 jt</div><div class="n">2 transaksi · 6 Januari</div></div>
+<div class="kpi k2"><div class="l">Diteruskan ke petani</div><div class="v" id="kopv">Rp2,03 jt</div><div class="n" id="kopn">1 dari 2 kontrak</div></div>
+<div class="kpi k3"><div class="l">Kelompok tani terlibat</div><div class="v">5</div><div class="n">4 bayam · 1 sawi</div></div>
+<div class="kpi k4"><div class="l">Waktu bayar ke petani</div><div class="v">1 hari</div><div class="n">setelah dana Loka MBG masuk</div></div></div>
+<div class="card" style="flex:1"><h2>Rincian kontrak</h2>
+<table><tr><th>Kontrak</th><th>Kelompok tani</th><th>Komoditas</th><th>Diterima SPPG</th><th>Nilai</th><th>Dana Loka MBG</th><th>Ke petani</th></tr>
+<tr><td>#BYM-0112</td><td>Poktan Tani Makmur</td><td>Bayam</td><td>270 kg</td><td>Rp2.025.000</td><td><span class="pill ok">Diterima</span></td><td><span class="pill ok">Ditransfer 6 Jan</span></td></tr>
+<tr><td>#SWI-0105</td><td>Poktan Sumber Rejeki</td><td>Sawi</td><td>100 kg</td><td>Rp750.000</td><td><span class="pill ok">Diterima</span></td><td id="kopswi"><span class="pill wait">Siap diteruskan</span></td></tr>
+<tr><td>#BYM-0113</td><td>Poktan Sido Rukun</td><td>Bayam</td><td>Kirim 12 Jan</td><td>± Rp2.062.500</td><td><span class="pill info">Belum dikirim</span></td><td><span class="pill info">Terjadwal</span></td></tr></table>
+<div class="banner" style="margin-top:16px">Pembayaran ke petani dilakukan non-tunai ke rekening kelompok tani dan otomatis dikabarkan lewat WhatsApp. Riwayat transfer tercatat untuk laporan ke dinas.</div></div>
+</div><div class="demo">Data ilustrasi</div></div></div>
+<div class="pt-wrap" data-k="wa-bayar"><div class="screen pscreen mob wa" data-key="wa-bayar" data-name="04c Petani – Pembayaran Diterima (WhatsApp)"><div class="wah"><div class="mark" style="border-radius:50%">S</div><div><div style="font-weight:700;font-size:15px">SELARAS · KDMP Sumber Makmur</div><div style="font-size:12px;color:#CDEBD8">Akun bisnis resmi</div></div></div>
+<div class="wab"><div class="day">5 Januari 2027</div>
+<div class="msg">Bayam kontrak <b>#BYM-0112</b> sudah diterima SPPG Lowokwaru 1: <b>270 kg</b> lolos mutu. Terima kasih, Pak.<div class="tm">13.40</div></div>
+<div class="day">6 Januari 2027</div>
+<div class="msg"><b>Pembayaran masuk</b><br>Kontrak #BYM-0112<br>270 kg × Rp7.500 = <b>Rp2.025.000</b><br>Ditransfer KDMP Sumber Makmur ke rekening Poktan Tani Makmur.<div class="tm">10.05</div></div>
+<div class="msg me">Sudah masuk. Terima kasih<div class="tm">10.12</div></div>
+<div class="msg">Sama-sama, Pak. Tawaran tanam untuk menu Februari akan dikirim minggu depan.<div class="tm">10.13</div></div></div>
+<div class="wai"><div class="f">Ketik pesan</div><div class="s"></div></div></div></div>
+<div class="pt-wrap" data-k="dasbor-dinas"><div class="screen pscreen desk" data-key="dasbor-dinas" data-name="07 Dinas – Dasbor Serapan Pangan Lokal">
+<div class="side"><div class="logo"><div class="mark">S</div>SELARAS</div><div class="org">Dinas Pertanian<br>Kab./Kota Malang</div>
+<div class="nav on">Dasbor Serapan</div><div class="nav">Peta Komoditas</div><div class="nav soon">SPPG &amp; Koperasi <small>segera</small></div><div class="nav soon">Penyuluh <small>segera</small></div><div class="nav soon">Unduh Laporan <small>segera</small></div>
+<div class="user"><div class="av">RW</div><div><b>Analis Dinas</b><br><span style="color:#6A7D72">Bidang Hortikultura</span></div></div></div>
+<div class="main">
+<div class="top"><div><h1>Dasbor Serapan Pangan Lokal</h1><div class="sub">Uji coba Tahap 1 · 10 SPPG · 4 koperasi · 24 kelompok tani · Januari–Juni 2027</div></div><span class="btn2">Unduh Laporan PDF</span></div>
+<div class="row">
+<div class="kpi k1"><div class="l">Belanja sayur dari petani lokal</div><div class="v">34%</div><div class="n">Target ≥ 30% · tercapai</div></div>
+<div class="kpi k2"><div class="l">Pengiriman tepat jadwal</div><div class="v">92%</div><div class="n">Target ≥ 90% · tercapai</div></div>
+<div class="kpi k1"><div class="l">Lolos pemeriksaan mutu</div><div class="v">96%</div><div class="n">Target ≥ 95% · tercapai</div></div>
+<div class="kpi k3"><div class="l">Kenaikan harga di petani</div><div class="v">+12%</div><div class="n">Target ≥ 10% · tercapai</div></div>
+<div class="kpi k4"><div class="l">Sayur terbuang di petani</div><div class="v">−22%</div><div class="n">Target ≥ 20% · tercapai</div></div></div>
+<div class="row" style="flex:1">
+<div class="card" style="flex:1.35"><h2>Porsi belanja sayur dari petani lokal per SPPG <span style="font-weight:400;color:#6A7D72;font-size:13px">(garis = target 30%)</span></h2>
+<div class="hb"><span>SPPG Lowokwaru 1</span><div class="bar"><b style="width:46%"></b><i class="tg"></i></div>46%</div>
+<div class="hb"><span>SPPG Dau 2</span><div class="bar"><b style="width:41%"></b><i class="tg"></i></div>41%</div>
+<div class="hb"><span>SPPG Karangploso 1</span><div class="bar"><b style="width:38%"></b><i class="tg"></i></div>38%</div>
+<div class="hb"><span>SPPG Singosari 3</span><div class="bar"><b style="width:35%"></b><i class="tg"></i></div>35%</div>
+<div class="hb"><span>SPPG Pakis 1</span><div class="bar"><b style="width:32%"></b><i class="tg"></i></div>32%</div>
+<div class="hb"><span>SPPG Tumpang 2</span><div class="bar"><b class="w" style="width:24%"></b><i class="tg"></i></div>24%</div>
+<div class="sub">+ 4 SPPG lainnya · rata-rata 34%</div></div>
+<div class="card" style="flex:1"><h2>Perlu tindak lanjut</h2>
+<table><tr><td><span class="pill wait">Pasokan</span></td><td>SPPG Tumpang 2 di bawah target; kurang petani wortel</td></tr>
+<tr><td><span class="pill risk">Cuaca</span></td><td>Hujan lebat minggu depan; 2 kontrak kangkung berisiko mundur</td></tr>
+<tr><td><span class="pill info">Penyuluh</span></td><td>3 pemeriksaan mutu belum dijadwalkan</td></tr></table></div></div>
+</div><div class="demo">Data ilustrasi</div></div></div>
+<div class="pt-wrap" data-k="wa-tolak"><div class="screen pscreen mob wa" data-key="wa-tolak" data-name="04b Petani – Menolak Tawaran (WhatsApp)"><div class="wah"><div class="mark" style="border-radius:50%">S</div><div><div style="font-weight:700;font-size:15px">SELARAS · KDMP Sumber Makmur</div><div style="font-size:12px;color:#CDEBD8">Akun bisnis resmi</div></div></div>
+<div class="wab"><div class="day">2 Januari 2027</div>
+<div class="msg">Halo Pak Darto (Poktan Ngudi Rejeki). <b>Tawaran kontrak tanam</b>: Bayam <b>275 kg</b>, tanam 6–8 Jan, panen 9–11 Feb, harga pasti <b>Rp7.500/kg</b>.<br>Balas <b>1</b> Setuju · <b>2</b> Tolak · <b>3</b> Tanya penyuluh<div class="tm">08.15</div></div>
+<div class="msg me">2<div class="tm">09.02</div></div>
+<div class="msg">Baik, Pak. Boleh tahu alasannya?<br><b>1</b> Lahan belum siap · <b>2</b> Harga kurang sesuai · <b>3</b> Volume terlalu besar · <b>4</b> Lainnya<div class="tm">09.02</div></div>
+<div class="msg me">3<div class="tm">09.05</div></div>
+<div class="msg">Terima kasih, Pak. Tawaran <b>diturunkan menjadi 150 kg</b> dengan jadwal dan harga sama. Sisa 125 kg ditawarkan ke kelompok tani lain.<div class="tm">09.05</div></div></div>
+<div class="qr"><span data-goto="notifikasi" data-toast="Kontrak 150 kg tercatat · sisa 125 kg ditawarkan ke poktan lain">1 · Setuju 150 kg</span><span data-goto="notifikasi" data-toast="Penolakan tercatat · tawaran dialihkan ke poktan lain">2 · Tetap tolak</span></div>
+<div class="wai"><div class="f">Ketik pesan</div><div class="s"></div></div></div></div>
+<div class="pt-wrap" data-k="mutu-gagal"><div class="screen pscreen mob" data-key="mutu-gagal" data-name="05c Penyuluh – Tidak Lolos Mutu">
+<div class="mh"><div class="t1">Pemeriksaan Mutu Pra-Panen</div><div class="t2">Penyuluh: Hadi P. · 17 Januari 2027</div></div>
+<div class="mb">
+<div class="mc"><div style="font-size:12px;color:#6A7D72">Kontrak #BYM-0114 · Poktan Sri Rejeki</div><b>Bayam · 275 kg · panen 19 Januari</b></div>
+<div class="mc"><div style="font-size:12px;color:#6A7D72;margin-bottom:4px">Daftar periksa standar mutu</div>
+<div class="ck">Warna daun hijau segar<span class="box">✓</span></div>
+<div class="ck">Tidak layu atau busuk<span class="box">✓</span></div>
+<div class="ck">Panjang tanaman 20–25 cm<span class="box">✓</span></div>
+<div class="ck">Bebas hama dan penyakit<span class="box w">✕</span></div>
+<div class="ck" style="border:none">Tidak disemprot 7 hari terakhir<span class="box">✓</span></div>
+<div style="font-size:12px;color:#6A7D72;margin-top:4px">Catatan: serangan ulat ± 40% tanaman, daun berlubang. Bagian yang masih layak dapat disortir.</div></div>
+<div class="mc" style="background:#FFF4EC;border-color:#FAD9C1;color:#7A3E17"><b>Hasil: Tidak lolos sebagian</b><br>Layak kirim ± 160 kg · <b>kurang 115 kg</b></div>
+<div class="mc" style="font-size:13px;color:#4A5D52">Tindak lanjut: jadwalkan pengendalian hama ramah lingkungan pada 18 Januari.</div>
+<div class="btn" data-goto="pasokan-kurang" data-toast="Peringatan pasokan kurang 115 kg terkirim ke KDMP Sumber Makmur" style="text-align:center;padding:14px">Kirim Peringatan ke Koperasi</div></div></div></div>
+<div class="pt-wrap" data-k="pasokan-kurang"><div class="screen pscreen desk" data-key="pasokan-kurang" data-name="10 Koperasi – Peringatan Pasokan Kurang"><div class="side"><div class="logo"><div class="mark">S</div>SELARAS</div><div class="org">KDMP Sumber Makmur<br>Kabupaten Malang</div><div class="nav">Permintaan SPPG</div><div class="nav on">Rencana Tanam Bersama</div><div class="nav">Kelompok Tani</div><div class="nav">Kontrak &amp; Pembayaran</div><div class="nav">Pengiriman</div><div class="nav">Notifikasi <span class="badge">3</span></div><div class="user"><div class="av">BS</div><div><b>Pengurus Koperasi</b><br><span style="color:#6A7D72">KDMP Sumber Makmur</span></div></div></div>
+<div class="main">
+<div class="top"><div><h1>Pasokan Bayam Kurang · Pengiriman 19 Januari</h1><div class="sub">Pilih cara menutup kekurangan sebelum H-2 agar menu SPPG Lowokwaru 1 tetap berjalan</div></div><span class="pill risk" style="font-size:13px;padding:6px 14px">Sisa waktu 2 hari</span></div>
+<div class="alert"><div class="ai">!</div><div><b>Kontrak #BYM-0114 · Poktan Sri Rejeki hanya dapat mengirim ± 160 dari 275 kg</b><div class="d">Hasil cek mutu penyuluh Hadi P. (17 Jan): serangan ulat ± 40% tanaman. Kekurangan <b>115 kg</b> untuk menu Bening Bayam, Selasa 19 Januari (2.000 porsi).</div></div></div>
+<div class="row">
+<div class="opt rec"><span class="tag">Disarankan sistem</span><div class="h">A · Alihkan ke kelompok tani cadangan</div><div>Poktan Maju Bersama punya bayam siap panen dan sudah lolos cek mutu minggu ini.</div>
+<div class="k"><span>Stok siap panen</span><b>120 kg</b></div><div class="k"><span>Jarak ke SPPG</span><b>6 km</b></div><div class="k"><span>Harga</span><b>Rp7.500/kg (sama)</b></div><div class="k"><span>Menu berubah?</span><b>Tidak</b></div>
+<span class="btn" data-goto="penerimaan" data-toast="Tawaran 115 kg terkirim ke Poktan Maju Bersama · disetujui · pengiriman 19 Jan aman">Kirim Tawaran Cadangan</span></div>
+<div class="opt"><div class="h">B · Beli dari pemasok lain di Loka MBG</div><div>Pesanan otomatis ke pemasok terdaftar di sekitar SPPG.</div>
+<div class="k"><span>Ketersediaan</span><b>Cukup</b></div><div class="k"><span>Harga pasar</span><b>± Rp9.000/kg</b></div><div class="k"><span>Tambahan biaya</span><b>± Rp172.500</b></div><div class="k"><span>Menu berubah?</span><b>Tidak</b></div>
+<span class="btn2" data-goto="penerimaan" data-toast="Pesanan 115 kg bayam dibuat di Loka MBG · tiba 19 Jan">Pesan di Loka MBG</span></div>
+<div class="opt"><div class="h">C · Usulkan menu pengganti ke SPPG</div><div>Ganti sebagian bayam dengan kangkung yang tersedia di kelompok tani mitra.</div>
+<div class="k"><span>Stok kangkung</span><b>300 kg</b></div><div class="k"><span>Perlu persetujuan</span><b>Ahli gizi SPPG</b></div><div class="k"><span>Harga</span><b>Rp6.500/kg</b></div><div class="k"><span>Menu berubah?</span><b>Ya, 1 hari</b></div>
+<span class="btn2" data-goto="menu-pengganti" data-toast="Usulan menu pengganti terkirim ke ahli gizi SPPG Lowokwaru 1">Kirim Usulan ke SPPG</span></div></div>
+<div class="card" style="flex:1"><h2>Jejak kejadian</h2><div class="steps"><div class="st on"><b>17 Jan · 10.20</b>Penyuluh kirim hasil cek mutu</div><div class="st on"><b>17 Jan · 10.21</b>Sistem hitung kekurangan 115 kg</div><div class="st on"><b>17 Jan · 10.22</b>Sistem cari cadangan dan pemasok</div><div class="st"><b>17 Jan · 18.00</b>Batas pilih solusi</div><div class="st"><b>19 Jan · 06.00</b>Bahan tiba di SPPG</div></div></div>
+<div class="banner">Poktan Sri Rejeki tetap dibayar untuk bayam yang lolos sortir (± 160 kg). Kejadian ini tercatat untuk perencanaan gelombang tanam berikutnya.</div>
+</div><div class="demo">Data ilustrasi</div></div></div>
+<div class="pt-wrap" data-k="menu-pengganti"><div class="screen pscreen desk" data-key="menu-pengganti" data-name="11 SPPG – Persetujuan Menu Pengganti"><div class="side"><div class="logo"><div class="mark">S</div>SELARAS</div><div class="org">SPPG Lowokwaru 1<br>Kota Malang</div><div class="nav">Dasbor Proyeksi</div><div class="nav on">Rencana Menu</div><div class="nav">Kontrak Pasok</div><div class="nav">Penerimaan &amp; Mutu</div><div class="nav">Laporan Serapan</div><div class="user"><div class="av">AN</div><div><b>Ahli Gizi</b><br><span style="color:#6A7D72">SPPG Lowokwaru 1</span></div></div></div>
+<div class="main">
+<div class="top"><div><h1>Usulan Menu Pengganti · Kamis, 28 Januari 2027</h1><div class="sub">Diajukan KDMP Sumber Makmur · perlu persetujuan ahli gizi paling lambat 25 Januari</div></div><span class="pill wait" style="font-size:13px;padding:6px 14px">Menunggu persetujuan</span></div>
+<div class="alert"><div class="ai">i</div><div><b>Wortel dari kelompok tani mitra gagal panen karena hujan deras</b><div class="d">Kekurangan 90 kg wortel untuk menu Sop Wortel &amp; Sawi. Koperasi mengusulkan buncis yang tersedia 150 kg dari Poktan Sido Rukun dengan harga kontrak yang sama.</div></div></div>
+<div class="row" style="flex:1">
+<div class="card" style="flex:1.3"><h2>Perbandingan zat gizi per 100 g bahan</h2>
+<table><tr><th>Zat gizi</th><th>Wortel (semula)</th><th>Buncis (usulan)</th><th>Keterangan</th></tr>
+<tr><td>Energi</td><td>± 36 kkal</td><td>± 35 kkal</td><td><span class="pill ok">Setara</span></td></tr>
+<tr><td>Protein</td><td>± 1,0 g</td><td>± 2,4 g</td><td><span class="pill ok">Lebih tinggi</span></td></tr>
+<tr><td>Serat</td><td>± 1,0 g</td><td>± 3,2 g</td><td><span class="pill ok">Lebih tinggi</span></td></tr>
+<tr><td>Vitamin A</td><td>Tinggi</td><td>Rendah</td><td><span class="pill risk">Lebih rendah</span></td></tr></table>
+<div style="font-size:12px;color:#6A7D72;margin-top:10px">Angka ilustrasi. Pada implementasi, nilai diambil dari Tabel Komposisi Pangan Indonesia.</div></div>
+<div class="card" style="flex:1;display:flex;flex-direction:column;gap:12px"><h2 style="margin:0">Menu setelah penyesuaian</h2>
+<div class="chk"><div class="n">1</div><div><b>Sop Buncis &amp; Sawi</b><br>Menggantikan Sop Wortel &amp; Sawi · 100 g per porsi</div></div>
+<div class="chk"><div class="n">2</div><div><b>Buah diganti pepaya</b><br>Menutup kekurangan vitamin A dari wortel</div></div>
+<div class="chk"><div class="n">3</div><div><b>Porsi dan anggaran tetap</b><br>2.000 porsi · selisih biaya Rp0</div></div>
+<div class="row" style="margin-top:auto;gap:10px"><span class="btn" style="flex:1;text-align:center" data-goto="penerimaan" data-toast="Menu 28 Januari diperbarui · koperasi dan petani mendapat kabar">Setujui Usulan</span><span class="btn2" style="flex:1;text-align:center" data-goto="pasokan-kurang">Minta Alternatif Lain</span></div></div></div>
+</div><div class="demo">Data ilustrasi</div></div></div>
+<div class="pt-wrap" data-k="dasbor-kosong"><div class="screen pscreen desk" data-key="dasbor-kosong" data-name="00 SPPG – Dasbor Kosong (belum ada menu)"><div class="side"><div class="logo"><div class="mark">S</div>SELARAS</div><div class="org">SPPG Lowokwaru 1<br>Kota Malang</div><div class="nav on">Dasbor Proyeksi</div><div class="nav">Rencana Menu</div><div class="nav">Kontrak Pasok</div><div class="nav">Penerimaan &amp; Mutu</div><div class="nav">Laporan Serapan</div><div class="user"><div class="av">AN</div><div><b>Ahli Gizi</b><br><span style="color:#6A7D72">SPPG Lowokwaru 1</span></div></div></div>
+<div class="main">
+<div class="top"><div><h1>Dasbor Proyeksi</h1><div class="sub">SPPG Lowokwaru 1 · periode Januari 2027</div></div></div>
+<div class="empty"><div class="ill">S</div><h2>Belum ada rencana menu untuk Januari 2027</h2>
+<div class="sub">Unggah rencana menu bulanan paling lambat 1 Desember agar petani mitra punya waktu menanam. SELARAS akan menghitung kebutuhan sayur dan buah secara otomatis.</div>
+<div style="display:flex;gap:10px;margin-top:6px"><span class="btn" data-goto="menu-perbaiki" data-toast="Menu_Januari_2027.xlsx diunggah · sistem memeriksa isi berkas">Unggah Rencana Menu</span><span class="btn2">Unduh Templat Menu</span></div>
+<div class="row" style="margin-top:18px;width:760px">
+<div class="chk" style="flex:1"><div class="n">1</div><div><b>Unggah menu</b><br>Format templat SPPG</div></div>
+<div class="chk" style="flex:1"><div class="n">2</div><div><b>Periksa proyeksi</b><br>Kebutuhan per komoditas</div></div>
+<div class="chk" style="flex:1"><div class="n">3</div><div><b>Kirim ke koperasi</b><br>Mulai rencana tanam</div></div></div></div>
+<div class="banner">Pengingat otomatis dikirim ke ahli gizi 7 hari sebelum batas unggah.</div>
+</div><div class="demo">Data ilustrasi</div></div></div>
+<div class="pt-wrap" data-k="menu-perbaiki"><div class="screen pscreen desk" data-key="menu-perbaiki" data-name="01b SPPG – Berkas Menu Perlu Diperbaiki"><div class="side"><div class="logo"><div class="mark">S</div>SELARAS</div><div class="org">SPPG Lowokwaru 1<br>Kota Malang</div><div class="nav">Dasbor Proyeksi</div><div class="nav on">Rencana Menu</div><div class="nav">Kontrak Pasok</div><div class="nav">Penerimaan &amp; Mutu</div><div class="nav">Laporan Serapan</div><div class="user"><div class="av">AN</div><div><b>Ahli Gizi</b><br><span style="color:#6A7D72">SPPG Lowokwaru 1</span></div></div></div>
+<div class="main">
+<div class="top"><div><h1>Unggah Rencana Menu Bulanan</h1><div class="sub">Januari 2027 · 22 hari layanan · 2.000 porsi per hari</div></div><span class="btn" style="opacity:.4">Proses Proyeksi</span></div>
+<div class="steps"><div class="st on"><b>1 · Unggah menu</b>Januari 2027</div><div class="st"><b>2 · Periksa porsi</b>Standar berat bersih</div><div class="st"><b>3 · Proyeksi</b>Kebutuhan komoditas</div><div class="st"><b>4 · Kirim</b>Ke koperasi mitra</div></div>
+<div class="alert"><div class="ai">!</div><div><b>Menu_Januari_2027.xlsx belum bisa diproses: 3 hal perlu diperbaiki</b><div class="d">Perbaiki di berkas lalu unggah ulang, atau ubah langsung di kolom yang ditandai di bawah.</div></div></div>
+<div class="row" style="flex:1">
+<div class="card" style="flex:1;display:flex;flex-direction:column;gap:10px"><h2 style="margin:0 0 4px">Hasil pemeriksaan berkas</h2>
+<div class="chk err"><div class="n">!</div><div><b>Baris 8 · Rabu, 13 Januari</b><br>Kolom berat sayur kosong. Isi berat bersih per porsi (gram).</div></div>
+<div class="chk err"><div class="n">!</div><div><b>Baris 14 · "Sayur asem"</b><br>Belum dikenali sistem. Pilih padanan bahan: labu siam, kacang panjang, jagung muda.</div></div>
+<div class="chk err"><div class="n">!</div><div><b>Baris 1 · Jumat, 1 Januari</b><br>Tanggal libur nasional. Hapus baris atau ubah menjadi hari layanan lain.</div></div>
+<div class="chk"><div class="n">✓</div><div><b>19 hari lainnya sesuai</b><br>Bahan dan porsi terbaca dengan benar</div></div></div>
+<div class="card" style="flex:.8;display:flex;flex-direction:column;gap:14px"><h2 style="margin:0">Berkas</h2>
+<div class="drop" style="background:#FFF4EC;border-color:#FAD9C1"><b style="color:#7A3E17">Menu_Januari_2027.xlsx</b><br>3 catatan · 19 dari 22 hari terbaca</div>
+<span class="btn2" style="text-align:center" data-goto="menu" data-toast="Berkas diperbaiki · 22 dari 22 hari terbaca">Unggah Ulang Berkas</span><span class="btn2" style="text-align:center" data-goto="menu" data-toast="3 catatan diperbaiki · 22 dari 22 hari terbaca">Perbaiki di Layar Ini</span>
+<div style="font-size:12.5px;color:#6A7D72;line-height:1.5">Proyeksi baru dapat dihitung setelah semua hari layanan terbaca, supaya kebutuhan petani tidak meleset.</div></div></div>
+</div><div class="demo">Data ilustrasi</div></div></div>
+<div class="pt-wrap" data-k="notifikasi"><div class="screen pscreen desk" data-key="notifikasi" data-name="12 Koperasi – Pusat Notifikasi"><div class="side"><div class="logo"><div class="mark">S</div>SELARAS</div><div class="org">KDMP Sumber Makmur<br>Kabupaten Malang</div><div class="nav">Permintaan SPPG</div><div class="nav">Rencana Tanam Bersama</div><div class="nav">Kelompok Tani</div><div class="nav">Kontrak &amp; Pembayaran</div><div class="nav">Pengiriman</div><div class="nav on">Notifikasi <span class="badge">3</span></div><div class="user"><div class="av">BS</div><div><b>Pengurus Koperasi</b><br><span style="color:#6A7D72">KDMP Sumber Makmur</span></div></div></div>
+<div class="main">
+<div class="top"><div><h1>Notifikasi</h1><div class="sub">Semua kabar dari SPPG, penyuluh, petani, dan Loka MBG di satu tempat</div></div><span class="btn2">Tandai Semua Dibaca</span></div>
+<div class="chips"><span class="chip on">Semua</span><span class="chip">Perlu tindakan · 3</span><span class="chip">SPPG</span><span class="chip">Penyuluh</span><span class="chip">Petani</span><span class="chip">Pembayaran</span></div>
+<div class="card" style="flex:1;padding:8px 20px">
+<div class="ntf unread" data-goto="pasokan-kurang"><div class="ni" style="background:#FAD9C1;color:#7A3E17">!</div><div><b>Pasokan bayam kurang 115 kg untuk 19 Januari</b><br>Penyuluh Hadi P. menandai kontrak #BYM-0114 tidak lolos sebagian. Pilih cara menutup kekurangan.</div><div class="w">10 menit lalu</div></div>
+<div class="ntf unread" data-goto="wa-tolak"><div class="ni" style="background:#FBF1C7;color:#6B5310">PT</div><div><b>Poktan Ngudi Rejeki menolak tawaran bayam Februari 275 kg</b><br>Alasan: volume terlalu besar. Tawaran 150 kg sedang menunggu jawaban.</div><div class="w">1 jam lalu</div></div>
+<div class="ntf unread" data-goto="proyeksi"><div class="ni" style="background:#E1ECF5;color:#2B4D69">SP</div><div><b>SPPG Lowokwaru 1 mengirim proyeksi Februari 2027</b><br>Kebutuhan baru: bayam 1,0 ton, kangkung 0,6 ton, buncis 0,4 ton.</div><div class="w">3 jam lalu</div></div>
+<div class="ntf" data-goto="bayar-petani"><div class="ni" style="background:#CDEBD8;color:#1E4A35">Rp</div><div><b>Dana Loka MBG masuk Rp2,78 jt</b><br>Pembayaran 2 kontrak sudah diteruskan ke kelompok tani.</div><div class="w">Kemarin</div></div>
+<div class="ntf" data-goto="cek-mutu"><div class="ni" style="background:#CDEBD8;color:#1E4A35">✓</div><div><b>Cek mutu #BYM-0112 lolos dengan catatan</b><br>Estimasi panen 280 kg, siap kirim 5 Januari.</div><div class="w">3 Jan</div></div>
+<div class="ntf" style="border:none" data-goto="rencana-tanam"><div class="ni" style="background:#FBF1C7;color:#6B5310">PT</div><div><b>4 kelompok tani menyetujui kontrak bayam Januari</b><br>Total 1,1 ton · pengingat panen dijadwalkan otomatis.</div><div class="w">2 Des</div></div></div>
+</div><div class="demo">Data ilustrasi</div></div></div>
+<div class="pt-wrap" data-k="riwayat-poktan"><div class="screen pscreen desk" data-key="riwayat-poktan" data-name="13 Koperasi – Riwayat Kontrak Kelompok Tani"><div class="side"><div class="logo"><div class="mark">S</div>SELARAS</div><div class="org">KDMP Sumber Makmur<br>Kabupaten Malang</div><div class="nav">Permintaan SPPG</div><div class="nav">Rencana Tanam Bersama</div><div class="nav on">Kelompok Tani</div><div class="nav">Kontrak &amp; Pembayaran</div><div class="nav">Pengiriman</div><div class="nav">Notifikasi <span class="badge">3</span></div><div class="user"><div class="av">BS</div><div><b>Pengurus Koperasi</b><br><span style="color:#6A7D72">KDMP Sumber Makmur</span></div></div></div>
+<div class="main">
+<div class="top"><div class="prof"><div class="pa">TM</div><div><h1>Poktan Tani Makmur</h1><div class="sub">Ketua: Slamet · Desa Sumbersekar, Dau · 18 anggota · lahan 2,4 ha · penyuluh Rina S.</div></div></div><span class="btn" data-goto="wa-tawaran" data-toast="Tawaran kontrak terkirim ke Poktan Tani Makmur via WhatsApp">Kirim Tawaran Baru</span></div>
+<div class="row">
+<div class="kpi k1"><div class="l">Kontrak selesai</div><div class="v">6</div><div class="n">sejak Agustus 2026</div></div>
+<div class="kpi k2"><div class="l">Pengiriman tepat jadwal</div><div class="v">100%</div><div class="n">6 dari 6 pengiriman</div></div>
+<div class="kpi k3"><div class="l">Rata-rata lolos mutu</div><div class="v">97%</div><div class="n">dari volume kontrak</div></div>
+<div class="kpi k4"><div class="l">Total diterima petani</div><div class="v">Rp9,4 jt</div><div class="n">dibayar rata-rata 1 hari</div></div></div>
+<div class="row" style="flex:1">
+<div class="card" style="flex:1.6"><h2>Riwayat kontrak</h2>
+<table class="nw"><tr><th>Kontrak</th><th>Komoditas</th><th>Volume</th><th>Diterima</th><th>Mutu</th><th>Ditransfer</th></tr>
+<tr><td>#BYM-0112</td><td>Bayam</td><td>275 kg</td><td>270 kg</td><td><span class="pill ok">Lolos</span></td><td><span class="pill ok">6 Jan</span></td></tr>
+<tr><td>#KGK-0094</td><td>Kangkung</td><td>250 kg</td><td>250 kg</td><td><span class="pill ok">Lolos</span></td><td><span class="pill ok">9 Des</span></td></tr>
+<tr><td>#BYM-0081</td><td>Bayam</td><td>275 kg</td><td>262 kg</td><td><span class="pill wait">Catatan</span></td><td><span class="pill ok">11 Nov</span></td></tr>
+<tr><td>#BYM-0067</td><td>Bayam</td><td>200 kg</td><td>200 kg</td><td><span class="pill ok">Lolos</span></td><td><span class="pill ok">14 Okt</span></td></tr>
+<tr><td>#BCS-0052</td><td>Buncis</td><td>150 kg</td><td>146 kg</td><td><span class="pill ok">Lolos</span></td><td><span class="pill ok">16 Sep</span></td></tr>
+<tr><td>#BYM-0041</td><td>Bayam</td><td>150 kg</td><td>150 kg</td><td><span class="pill ok">Lolos</span></td><td><span class="pill ok">19 Agu</span></td></tr></table></div>
+<div class="card" style="flex:1"><h2>Volume diterima per bulan (kg)</h2>
+<div class="mini"><div><i style="height:40px"></i>Agu</div><div><i style="height:58px"></i>Sep</div><div><i style="height:80px"></i>Okt</div><div><i class="w" style="height:84px"></i>Nov</div><div><i style="height:80px"></i>Des</div><div><i style="height:86px"></i>Jan</div></div>
+<div style="font-size:12px;color:#6A7D72;margin-top:8px">Kuning: ada catatan mutu</div>
+<div class="banner" style="margin-top:14px">Riwayat ini dipakai koperasi untuk memprioritaskan tawaran dan dapat menjadi bukti kelayakan saat petani mengajukan pembiayaan.</div></div></div>
+</div><div class="demo">Data ilustrasi</div></div></div>
+<div class="pt-wrap" data-k="kontrak-pasok"><div class="screen pscreen desk" data-key="kontrak-pasok" data-name="14 SPPG – Kontrak Pasok"><div class="side"><div class="logo"><div class="mark">S</div>SELARAS</div><div class="org">SPPG Lowokwaru 1<br>Kota Malang</div><div class="nav">Dasbor Proyeksi</div><div class="nav">Rencana Menu</div><div class="nav on">Kontrak Pasok</div><div class="nav">Penerimaan &amp; Mutu</div><div class="nav">Laporan Serapan</div><div class="user"><div class="av">AN</div><div><b>Ahli Gizi</b><br><span style="color:#6A7D72">SPPG Lowokwaru 1</span></div></div></div>
+<div class="main">
+<div class="top"><div><h1>Kontrak Pasok · Januari 2027</h1><div class="sub">Kontrak dengan koperasi mitra yang bersumber dari rencana menu bulan ini</div></div><span class="btn2">Unduh Rekap Kontrak</span></div>
+<div class="row">
+<div class="kpi k1"><div class="l">Kontrak aktif</div><div class="v">7</div><div class="n">2 koperasi · 7 kelompok tani</div></div>
+<div class="kpi k2"><div class="l">Volume dikontrak</div><div class="v">1,8 ton</div><div class="n">bayam, sawi, kangkung</div></div>
+<div class="kpi k3"><div class="l">Nilai kontrak</div><div class="v">Rp12,9 jt</div><div class="n">harga pasti sejak tanam</div></div>
+<div class="kpi k4"><div class="l">Porsi dari petani lokal</div><div class="v">46%</div><div class="n">dari belanja sayur bulan ini</div></div></div>
+<div class="card" style="flex:1"><h2>Daftar kontrak</h2>
+<table><tr><th>Kontrak</th><th>Koperasi</th><th>Kelompok tani</th><th>Komoditas</th><th>Volume</th><th>Jadwal kirim</th><th>Status</th></tr>
+<tr><td>#BYM-0112</td><td>KDMP Sumber Makmur</td><td>Poktan Tani Makmur</td><td>Bayam</td><td>275 kg</td><td>5 Jan</td><td><span class="pill ok">Diterima</span></td></tr>
+<tr><td>#SWI-0105</td><td>KDMP Sumber Makmur</td><td>Poktan Sumber Rejeki</td><td>Sawi</td><td>100 kg</td><td>5 Jan</td><td><span class="pill ok">Diterima</span></td></tr>
+<tr><td>#BYM-0113</td><td>KDMP Sumber Makmur</td><td>Poktan Sido Rukun</td><td>Bayam</td><td>275 kg</td><td>12 Jan</td><td><span class="pill info">Tumbuh</span></td></tr>
+<tr><td>#BYM-0114</td><td>KDMP Sumber Makmur</td><td>Poktan Sri Rejeki</td><td>Bayam</td><td>275 kg</td><td>19 Jan</td><td><span class="pill risk" data-goto="pasokan-kurang">Perlu perhatian</span></td></tr>
+<tr><td>#BYM-0115</td><td>KDMP Sumber Makmur</td><td>Poktan Ngudi Rejeki</td><td>Bayam</td><td>275 kg</td><td>26 Jan</td><td><span class="pill info">Tumbuh</span></td></tr>
+<tr><td>#KGK-0121</td><td>KDMP Dau Sejahtera</td><td>Poktan Maju Bersama</td><td>Kangkung</td><td>300 kg</td><td>14 Jan</td><td><span class="pill wait">Cek mutu</span></td></tr>
+<tr><td>#KGK-0122</td><td>KDMP Dau Sejahtera</td><td>Poktan Tunas Harapan</td><td>Kangkung</td><td>300 kg</td><td>28 Jan</td><td><span class="pill info">Tumbuh</span></td></tr></table>
+<div class="banner" style="margin-top:14px">Sayur yang tidak dikontrak (wortel, buncis, labu siam) dipesan lewat Loka MBG seperti biasa.</div></div>
+</div><div class="demo">Data ilustrasi</div></div></div>
+<div class="pt-wrap" data-k="pengiriman"><div class="screen pscreen desk" data-key="pengiriman" data-name="15 Koperasi – Jadwal Pengiriman"><div class="side"><div class="logo"><div class="mark">S</div>SELARAS</div><div class="org">KDMP Sumber Makmur<br>Kabupaten Malang</div><div class="nav">Permintaan SPPG</div><div class="nav">Rencana Tanam Bersama</div><div class="nav">Kelompok Tani</div><div class="nav">Kontrak &amp; Pembayaran</div><div class="nav on">Pengiriman</div><div class="nav">Notifikasi <span class="badge">3</span></div><div class="user"><div class="av">BS</div><div><b>Pengurus Koperasi</b><br><span style="color:#6A7D72">KDMP Sumber Makmur</span></div></div></div>
+<div class="main">
+<div class="top"><div><h1>Jadwal Pengiriman · Januari 2027</h1><div class="sub">Panen dikumpulkan di gudang koperasi, lalu diantar ke SPPG pukul 05.00–06.00</div></div><span class="btn">Cetak Surat Jalan</span></div>
+<div class="row">
+<div class="kpi k1"><div class="l">Pengiriman bulan ini</div><div class="v">5</div><div class="n">1 selesai · 4 terjadwal</div></div>
+<div class="kpi k2"><div class="l">Tepat jadwal</div><div class="v">100%</div><div class="n">1 dari 1 pengiriman</div></div>
+<div class="kpi k3"><div class="l">Volume diantar</div><div class="v">370 kg</div><div class="n">dari 1,4 ton dijadwalkan</div></div>
+<div class="kpi k4"><div class="l">Jarak rata-rata</div><div class="v">8 km</div><div class="n">gudang ke SPPG</div></div></div>
+<div class="card" style="flex:1;padding-top:12px"><h2>Jadwal per minggu</h2>
+<table><tr><th>Tanggal</th><th>Tujuan</th><th>Isi muatan</th><th>Asal kelompok tani</th><th>Pengemudi</th><th>Status</th></tr>
+<tr><td>Sel, 5 Jan</td><td>SPPG Lowokwaru 1</td><td>Bayam 270 kg · Sawi 100 kg</td><td>Tani Makmur, Sumber Rejeki</td><td>Pak Joko</td><td><span class="pill ok">Diterima 05.42</span></td></tr>
+<tr><td>Sel, 12 Jan</td><td>SPPG Lowokwaru 1</td><td>Bayam 275 kg</td><td>Sido Rukun</td><td>Pak Joko</td><td><span class="pill info">Terjadwal</span></td></tr>
+<tr><td>Sel, 19 Jan</td><td>SPPG Lowokwaru 1</td><td>Bayam 275 kg</td><td>Sri Rejeki + cadangan</td><td>Pak Joko</td><td><span class="pill risk" data-goto="pasokan-kurang">Pasokan kurang</span></td></tr>
+<tr><td>Sel, 26 Jan</td><td>SPPG Lowokwaru 1</td><td>Bayam 275 kg</td><td>Ngudi Rejeki</td><td>Pak Joko</td><td><span class="pill info">Terjadwal</span></td></tr>
+<tr><td>Kam, 28 Jan</td><td>SPPG Dau 2</td><td>Bayam 200 kg</td><td>Tani Makmur</td><td>Pak Ruslan</td><td><span class="pill info">Terjadwal</span></td></tr></table>
+<div class="banner" style="margin-top:14px">Pengingat panen dikirim ke kelompok tani H-3 dan H-1 lewat WhatsApp. Bukti terima dari SPPG tercatat otomatis untuk proses pembayaran.</div></div>
+</div><div class="demo">Data ilustrasi</div></div></div>
+<div class="pt-wrap" data-k="peta-komoditas"><div class="screen pscreen desk" data-key="peta-komoditas" data-name="16 Dinas – Peta Komoditas"><div class="side"><div class="logo"><div class="mark">S</div>SELARAS</div><div class="org">Dinas Pertanian<br>Kab./Kota Malang</div><div class="nav">Dasbor Serapan</div><div class="nav on">Peta Komoditas</div><div class="nav soon">SPPG &amp; Koperasi <small>segera</small></div><div class="nav soon">Penyuluh <small>segera</small></div><div class="nav soon">Unduh Laporan <small>segera</small></div><div class="user"><div class="av">RW</div><div><b>Analis Dinas</b><br><span style="color:#6A7D72">Bidang Hortikultura</span></div></div></div>
+<div class="main">
+<div class="top"><div><h1>Peta Komoditas · Januari 2027</h1><div class="sub">Pasokan sayur dari kelompok tani mitra per kecamatan dibanding kebutuhan SPPG</div></div><div class="chips"><span class="chip on">Semua sayur</span><span class="chip">Bayam</span><span class="chip">Kangkung</span><span class="chip">Wortel</span></div></div>
+<div class="row" style="flex:1">
+<div class="card" style="flex:1.45;display:flex;flex-direction:column;gap:12px"><h2 style="margin:0">Peta skematik kecamatan · volume dikontrak per bulan</h2>
+<div class="tiles"><div class="tile l0"><b>Lowokwaru</b><span>Kota Malang · 3 SPPG · kebutuhan</span><div class="v">2,1 ton</div></div><div class="tile l3"><b>Dau</b><span>Kab. Malang · 6 poktan · bayam, kangkung</span><div class="v">1,4 ton</div></div><div class="tile l2"><b>Karangploso</b><span>Kab. Malang · 4 poktan · bayam, sawi</span><div class="v">0,9 ton</div></div><div class="tile l2"><b>Singosari</b><span>Kab. Malang · 3 poktan · sawi, buncis</span><div class="v">0,7 ton</div></div><div class="tile l3"><b>Pujon</b><span>Kab. Malang · 5 poktan · wortel, kubis</span><div class="v">1,2 ton</div></div><div class="tile l1"><b>Ngantang</b><span>Kab. Malang · 2 poktan · wortel</span><div class="v">0,4 ton</div></div><div class="tile l2"><b>Poncokusumo</b><span>Kab. Malang · 4 poktan · apel, sawi</span><div class="v">0,8 ton</div></div><div class="tile l1"><b>Tumpang</b><span>Kab. Malang · 1 poktan · buncis</span><div class="v">0,2 ton</div></div></div>
+<div class="lg"><span><i style="background:#F3F8F4;border:1px dashed #DCE7DF"></i>Wilayah kebutuhan (SPPG)</span><span><i style="background:#E3EFDF"></i>&lt; 0,5 ton</span><span><i style="background:#B7D3B0"></i>0,5–1 ton</span><span><i style="background:#7FBF97"></i>&gt; 1 ton</span></div>
+<div class="banner">Total pasokan mitra 5,6 ton per bulan (sayur dan buah) untuk 10 SPPG uji coba. Wortel paling rentan: hanya 2 kecamatan pemasok.</div></div>
+<div class="card" style="flex:1"><h2>Keseimbangan per komoditas</h2>
+<table><tr><th>Komoditas</th><th>Kebutuhan</th><th>Dikontrak</th><th>Status</th></tr>
+<tr><td>Bayam</td><td>2,2 ton</td><td>2,0 ton</td><td><span class="pill ok">91%</span></td></tr>
+<tr><td>Kangkung</td><td>1,2 ton</td><td>1,1 ton</td><td><span class="pill ok">92%</span></td></tr>
+<tr><td>Sawi</td><td>0,9 ton</td><td>0,8 ton</td><td><span class="pill ok">89%</span></td></tr>
+<tr><td>Wortel</td><td>1,6 ton</td><td>0,9 ton</td><td><span class="pill risk">56%</span></td></tr>
+<tr><td>Buncis</td><td>0,8 ton</td><td>0,5 ton</td><td><span class="pill wait">63%</span></td></tr></table>
+<div style="font-size:12.5px;color:#6A7D72;margin-top:12px;line-height:1.5">Rekomendasi: arahkan penyuluh di Pujon dan Ngantang untuk menambah kelompok tani wortel pada musim tanam berikutnya.</div></div></div>
+</div><div class="demo">Data ilustrasi</div></div></div>
+<div class="pt-wrap" data-k="login-sppg"><div class="screen pscreen desk login" data-key="login-sppg" data-name="Masuk SPPG"><div class="lg-left"><div class="logo"><div class="mark">S</div>SELARAS</div>
+<h2>Menu dan ladang<br>berjalan selaras.</h2><p>Masuk untuk melihat kebutuhan menu, rencana tanam, dan serapan pangan lokal sesuai peran Anda.</p>
+<div class="lg-foot">Prototipe gagasan · IYEEA 2026 · Data ilustrasi</div></div>
+<div class="lg-right"><span class="lg-back" data-goto="masuk">‹ Ganti peran</span>
+<div class="lg-card"><div class="lg-head"><div class="lg-av" style="background:#CDEBD8;color:#1E4A35">SP</div><div><b>Masuk sebagai SPPG</b><span>SPPG Lowokwaru 1 · Kota Malang</span></div></div>
+<label>Email</label><div class="lg-in">ahligizi.lowokwaru1@sppg.demo</div><label>Kata sandi</label><div class="lg-in pw">••••••••••<em>Lihat</em></div>
+<div class="lg-row"><span><i>✓</i>Ingat saya</span><em>Lupa kata sandi?</em></div>
+<span class="btn lg-btn" data-goto="menu" data-toast="Berhasil masuk sebagai SPPG (akun demo)">Masuk</span><div class="lg-or">atau</div>
+<span class="btn2 lg-btn" data-goto="menu" data-toast="Berhasil masuk lewat akun Loka MBG">Masuk dengan akun Loka MBG</span>
+<div class="lg-note">Akun demo · Di sistem asli, akun SPPG terhubung dengan akun yang sudah dipakai di Loka MBG, sehingga tidak perlu membuat akun baru.</div></div></div><div class="demo">Data ilustrasi</div></div></div>
+<div class="pt-wrap" data-k="login-koperasi"><div class="screen pscreen desk login" data-key="login-koperasi" data-name="Masuk Koperasi Desa"><div class="lg-left"><div class="logo"><div class="mark">S</div>SELARAS</div>
+<h2>Menu dan ladang<br>berjalan selaras.</h2><p>Masuk untuk melihat kebutuhan menu, rencana tanam, dan serapan pangan lokal sesuai peran Anda.</p>
+<div class="lg-foot">Prototipe gagasan · IYEEA 2026 · Data ilustrasi</div></div>
+<div class="lg-right"><span class="lg-back" data-goto="masuk">‹ Ganti peran</span>
+<div class="lg-card"><div class="lg-head"><div class="lg-av" style="background:#E3EFDF;color:#2E5226">KD</div><div><b>Masuk sebagai Koperasi Desa</b><span>KDMP Sumber Makmur · Kabupaten Malang</span></div></div>
+<label>Email</label><div class="lg-in">pengurus@kdmp-sumbermakmur.demo</div><label>Kata sandi</label><div class="lg-in pw">••••••••••<em>Lihat</em></div>
+<div class="lg-row"><span><i>✓</i>Ingat saya</span><em>Lupa kata sandi?</em></div>
+<span class="btn lg-btn" data-goto="rencana-tanam" data-toast="Berhasil masuk sebagai Koperasi Desa (akun demo)">Masuk</span><div class="lg-or">atau</div>
+<span class="btn2 lg-btn" data-goto="rencana-tanam" data-toast="Berhasil masuk lewat akun Loka MBG">Masuk dengan akun Loka MBG</span>
+<div class="lg-note">Akun demo · Di sistem asli, koperasi masuk dengan akun mitra Loka MBG. Setiap pengurus hanya melihat kontrak koperasinya sendiri.</div></div></div><div class="demo">Data ilustrasi</div></div></div>
+<div class="pt-wrap" data-k="login-dinas"><div class="screen pscreen desk login" data-key="login-dinas" data-name="Masuk Dinas Pertanian"><div class="lg-left"><div class="logo"><div class="mark">S</div>SELARAS</div>
+<h2>Menu dan ladang<br>berjalan selaras.</h2><p>Masuk untuk melihat kebutuhan menu, rencana tanam, dan serapan pangan lokal sesuai peran Anda.</p>
+<div class="lg-foot">Prototipe gagasan · IYEEA 2026 · Data ilustrasi</div></div>
+<div class="lg-right"><span class="lg-back" data-goto="masuk">‹ Ganti peran</span>
+<div class="lg-card"><div class="lg-head"><div class="lg-av" style="background:#E1ECF5;color:#2B4D69">DP</div><div><b>Masuk sebagai Dinas Pertanian</b><span>Dinas Pertanian · Kab./Kota Malang</span></div></div>
+<label>Email</label><div class="lg-in">analis.horti@distan-malang.demo</div><label>Kata sandi</label><div class="lg-in pw">••••••••••<em>Lihat</em></div>
+<div class="lg-row"><span><i>✓</i>Ingat saya</span><em>Lupa kata sandi?</em></div>
+<span class="btn lg-btn" data-goto="dasbor-dinas" data-toast="Berhasil masuk sebagai Dinas Pertanian (akun demo)">Masuk</span><div class="lg-or">atau</div>
+<span class="btn2 lg-btn" data-goto="dasbor-dinas" data-toast="Berhasil masuk lewat akun pemerintah daerah">Masuk dengan akun pemerintah daerah</span>
+<div class="lg-note">Akun demo · Di sistem asli, Dinas masuk dengan akun pemerintah daerah dan hanya melihat data agregat, bukan data pribadi petani.</div></div></div><div class="demo">Data ilustrasi</div></div></div>
+<div class="pt-wrap" data-k="login-penyuluh"><div class="screen pscreen mob login-m" data-key="login-penyuluh" data-name="Masuk Penyuluh"><div class="mh lgm-h"><div class="lgm-logo"><div class="mark">S</div>SELARAS</div><div class="t1">Aplikasi Penyuluh</div><div class="t2">Dampingi budidaya dan periksa mutu sebelum panen.</div></div>
+<div class="lgm-card"><label>Nomor induk penyuluh atau email</label><div class="lg-in">rina.s@penyuluh.demo</div><label>Kata sandi</label><div class="lg-in pw">••••••••••</div>
+<div class="lg-row"><span><i>✓</i>Tetap masuk di perangkat ini</span></div>
+<span class="btn lg-btn" data-goto="cek-mutu" data-toast="Berhasil masuk sebagai penyuluh (akun demo)">Masuk</span>
+<span class="btn2 lg-btn" data-goto="cek-mutu" data-toast="Kode OTP terverifikasi (akun demo)">Masuk dengan kode OTP</span>
+<div class="lg-note">Akun demo · Di sistem asli, penyuluh masuk dengan akun Dinas Pertanian dan aplikasi tetap bisa mencatat hasil cek mutu tanpa sinyal, lalu mengirimnya saat online.</div></div></div></div>
+<div class="pt-side" id="side"><div class="r" id="sideR"></div><div class="t" id="sideT"></div><div class="btn" id="sideB"></div></div></div>
+<div class="pt-toasts" id="toasts"></div>
+<script>
+const FLOWS=[["utama", "Alur utama", ["masuk", "login-sppg", "menu", "proyeksi", "rencana-tanam", "wa-tawaran", "wa-setuju", "cek-mutu", "penerimaan", "bayar-petani", "wa-bayar", "dasbor-dinas"]], ["tolak", "Petani menolak", ["wa-tawaran", "wa-tolak", "notifikasi"]], ["pasokan", "Pasokan kurang", ["mutu-gagal", "pasokan-kurang", "menu-pengganti", "penerimaan"]], ["bulanbaru", "SPPG bulan baru", ["dasbor-kosong", "menu-perbaiki", "menu"]], ["jelajah", "Jelajah koperasi & Dinas", ["notifikasi", "riwayat-poktan", "pengiriman", "kontrak-pasok", "peta-komoditas"]], ["login", "Login per peran", ["masuk", "login-sppg", "login-koperasi", "login-penyuluh", "login-dinas"]]], LBL={"masuk": "Pilih peran", "login-sppg": "Login SPPG", "login-koperasi": "Login koperasi", "login-dinas": "Login Dinas", "login-penyuluh": "Login penyuluh", "menu": "Menu", "proyeksi": "Proyeksi", "rencana-tanam": "Rencana tanam", "wa-tawaran": "Tawaran WA", "wa-setuju": "Petani setuju", "cek-mutu": "Cek mutu", "penerimaan": "Penerimaan", "bayar-petani": "Bayar petani", "wa-bayar": "Kabar bayar", "dasbor-dinas": "Dasbor Dinas", "wa-tolak": "Petani menolak", "mutu-gagal": "Tidak lolos mutu", "pasokan-kurang": "Pasokan kurang", "menu-pengganti": "Menu pengganti", "dasbor-kosong": "Dasbor kosong", "menu-perbaiki": "Berkas diperbaiki", "notifikasi": "Notifikasi", "riwayat-poktan": "Riwayat poktan", "pengiriman": "Pengiriman", "kontrak-pasok": "Kontrak pasok", "peta-komoditas": "Peta komoditas"}, HINT={"login-sppg": "<b>Login.</b> Akun demo sudah terisi. Klik <b>Masuk</b>. Di sistem asli, akun SPPG terhubung dengan Loka MBG.", "login-koperasi": "<b>Login.</b> Akun demo sudah terisi. Klik <b>Masuk</b>.", "login-dinas": "<b>Login.</b> Akun demo sudah terisi. Klik <b>Masuk</b>.", "login-penyuluh": "<b>Login.</b> Akun demo sudah terisi. Klik <b>Masuk</b>.", "masuk": "Pilih peran (lalu masuk dengan akun demo), klik <b>Mulai demo alur lengkap</b>, atau pilih skenario lain di menu <b>Alur</b> di atas.", "menu": "<b>SPPG.</b> Ahli gizi mengunggah rencana menu bulanan. Klik <b>Proses Proyeksi</b>.", "proyeksi": "<b>Sistem.</b> Menu diubah otomatis menjadi kebutuhan per komoditas. Klik <b>Kirim ke Koperasi</b>.", "rencana-tanam": "<b>Koperasi.</b> Kebutuhan bayam 1,1 ton dibagi ke 4 kelompok tani yang menanam bergiliran. Klik <b>Kirim Tawaran via WhatsApp</b>.", "wa-tawaran": "<b>Petani.</b> Tawaran kontrak masuk lewat WhatsApp. Balas <b>1 · Setuju</b>, atau <b>2 · Tolak</b> untuk melihat skenario penolakan.", "wa-setuju": "<b>Petani.</b> Kontrak tercatat dan pengingat panen terkirim otomatis. Klik <b>Berikutnya</b>.", "cek-mutu": "<b>Penyuluh.</b> Ketuk kotak centang untuk mengubah hasil, lalu klik <b>Simpan dan Kirim ke Koperasi</b>.", "penerimaan": "<b>SPPG.</b> Bahan diterima dan dicocokkan dengan kontrak. Klik <b>Konfirmasi Penerimaan</b>.", "bayar-petani": "<b>Koperasi.</b> Dana dari Loka MBG diteruskan ke kelompok tani. Klik <b>Teruskan Pembayaran</b>.", "wa-bayar": "<b>Petani.</b> Kabar pembayaran Rp2.025.000 masuk di WhatsApp. Klik <b>Berikutnya</b>.", "dasbor-dinas": "<b>Dinas.</b> Dampak terpantau dengan lima indikator. Coba menu <b>Peta Komoditas</b>, atau klik <b>Ulangi</b>.", "wa-tolak": "<b>Petani menolak.</b> Sistem menanyakan alasan lalu menurunkan volume tawaran. Pilih salah satu balasan.", "mutu-gagal": "<b>Penyuluh.</b> Serangan ulat membuat 115 kg bayam tidak layak. Klik <b>Kirim Peringatan ke Koperasi</b>.", "pasokan-kurang": "<b>Koperasi.</b> Pilih cara menutup kekurangan: cadangan, Loka MBG, atau <b>Kirim Usulan ke SPPG</b>.", "menu-pengganti": "<b>SPPG.</b> Ahli gizi menilai pengganti dari sisi gizi. Klik <b>Setujui Usulan</b>.", "dasbor-kosong": "<b>SPPG.</b> Belum ada menu untuk bulan ini. Klik <b>Unggah Rencana Menu</b>.", "menu-perbaiki": "<b>Sistem.</b> Berkas diperiksa sebelum proyeksi dihitung. Klik <b>Perbaiki di Layar Ini</b>.", "notifikasi": "<b>Koperasi.</b> Semua kabar di satu tempat. Klik salah satu notifikasi untuk membukanya.", "riwayat-poktan": "<b>Koperasi.</b> Rekam jejak kontrak dan pembayaran kelompok tani. Klik <b>Berikutnya</b>.", "pengiriman": "<b>Koperasi.</b> Jadwal antar ke SPPG per minggu. Klik label <b>Pasokan kurang</b> untuk melihat penanganannya.", "kontrak-pasok": "<b>SPPG.</b> Semua kontrak bulan ini dan statusnya. Klik <b>Berikutnya</b>.", "peta-komoditas": "<b>Dinas.</b> Sebaran pasokan per kecamatan. Wortel baru terpenuhi 56%."}, SIDE={"wa-tawaran": ["Petani · WhatsApp", "Pak Slamet tidak perlu memasang aplikasi. Tawaran kontrak datang lewat akun WhatsApp resmi koperasi, lengkap dengan volume, jadwal, harga pasti, dan standar mutu."], "wa-setuju": ["Petani · WhatsApp", "Cukup membalas angka 1. Kontrak #BYM-0112 tercatat di SELARAS dan pengingat panen dikirim otomatis H-3."], "cek-mutu": ["Penyuluh · aplikasi seluler", "Penyuluh memeriksa standar mutu di lahan sebelum panen, sehingga bahan yang dikirim ke SPPG tidak ditolak di dapur."], "wa-bayar": ["Petani · WhatsApp", "Alur ditutup di titik terpenting: petani dibayar sesuai kontrak dan langsung mendapat kabar."], "wa-tolak": ["Petani · WhatsApp", "Penolakan tidak menghentikan rencana. Alasan petani dicatat, volume disesuaikan, dan sisanya ditawarkan ke kelompok tani lain."], "mutu-gagal": ["Penyuluh · aplikasi seluler", "Masalah ketahuan dua hari sebelum kirim, bukan di dapur SPPG. Koperasi masih sempat mencari pengganti."]}, SIDEBTN={"wa-setuju": ["Lanjut: pemeriksaan mutu", "cek-mutu"], "wa-bayar": ["Lihat dampak di dasbor Dinas", "dasbor-dinas"], "cek-mutu": ["Coba skenario: tidak lolos mutu", "mutu-gagal"], "mutu-gagal": ["Lanjut ke koperasi", "pasokan-kurang"], "wa-tolak": ["Lihat di notifikasi koperasi", "notifikasi"]}, NAVMAP={"Dasbor Proyeksi": "proyeksi", "Rencana Menu": "menu", "Kontrak Pasok": "kontrak-pasok", "Penerimaan & Mutu": "penerimaan", "Laporan Serapan": "dasbor-dinas", "Permintaan SPPG": "proyeksi", "Rencana Tanam Bersama": "rencana-tanam", "Kelompok Tani": "riwayat-poktan", "Kontrak & Pembayaran": "bayar-petani", "Pengiriman": "pengiriman", "Notifikasi": "notifikasi", "Dasbor Serapan": "dasbor-dinas", "Peta Komoditas": "peta-komoditas"};
+const KEYS=new Set(["masuk", "menu", "proyeksi", "rencana-tanam", "wa-tawaran", "wa-setuju", "cek-mutu", "penerimaan", "bayar-petani", "wa-bayar", "dasbor-dinas", "wa-tolak", "mutu-gagal", "pasokan-kurang", "menu-pengganti", "dasbor-kosong", "menu-perbaiki", "notifikasi", "riwayat-poktan", "kontrak-pasok", "pengiriman", "peta-komoditas", "login-sppg", "login-koperasi", "login-dinas", "login-penyuluh"]);
+let cur='masuk', flow='utama', timer=null, hist=[];
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const fsel=$('#flow'); FLOWS.forEach(([id,n])=>{const o=document.createElement('option');o.value=id;o.textContent='Alur: '+n;fsel.appendChild(o);});
+fsel.onchange=()=>{flow=fsel.value;hist=[];go(FLOWS.find(f=>f[0]===flow)[2][0],{keepFlow:true});};
+const seqOf=()=>FLOWS.find(f=>f[0]===flow)[2];
+function toast(t,kind){const el=document.createElement('div');el.className='pt-toast '+(kind||'');el.dataset.t=Date.now();el.innerHTML='<div class="ic">'+(kind==='info'?'i':'✓')+'</div><div>'+t+'</div>';$('#toasts').appendChild(el);setTimeout(()=>el.remove(),3400);}
+function layout(){const wrap=$('.pt-wrap.cur');if(!wrap)return;const sc=wrap.querySelector('.pscreen');const top=$('.pt-top').offsetHeight+$('.pt-hint').offsetHeight;const stage=$('#stage');stage.style.top=top+'px';
+ const side=$('#side');const sideW=(side.style.display==='flex'&&innerWidth>760)?336:0;
+ const aw=innerWidth-48-sideW, ah=innerHeight-top-40; const w=sc.offsetWidth,h=sc.offsetHeight;
+ const s=Math.min(aw/w, ah/h, w<500?1.05:1); sc.style.transform='scale('+s+')'; wrap.style.width=(w*s)+'px'; wrap.style.height=(h*s)+'px';}
+function resetStates(){const pays=$$('[data-pay]'); if(pays[0]){pays[0].className='pill info';pays[0].textContent='Diproses';} if(pays[1]){pays[1].className='pill wait';pays[1].textContent='Menunggu konfirmasi';}
+ const bk=$('#btnKonf'); if(bk){bk.className='btn';bk.textContent='Konfirmasi Penerimaan';}
+ const sw=$('#kopswi'); if(sw) sw.innerHTML='<span class="pill wait">Siap diteruskan</span>'; const kv=$('#kopv'); if(kv) kv.textContent='Rp2,03 jt'; const kn=$('#kopn'); if(kn) kn.textContent='1 dari 2 kontrak';
+ const bt=$('#btnTer'); if(bt){bt.className='btn';bt.textContent='Teruskan Pembayaran';}}
+function renderSteps(){const st=$('#steps');st.innerHTML='';const seq=seqOf();seq.forEach((k,i)=>{const b=document.createElement('button');b.textContent=(i+1)+' '+LBL[k];const ci=seq.indexOf(cur);b.className=k===cur?'on':(i<ci?'done':'');b.onclick=()=>go(k);st.appendChild(b);});
+ const on=st.querySelector('.on'); if(on) on.scrollIntoView({block:'nearest',inline:'center'});}
+function go(k,opt={}){ if(!KEYS.has(k)) k='masuk'; clearTimeout(timer);
+ if(!opt.back && cur!==k) hist.push(cur); if(hist.length>40) hist.shift();
+ if(!opt.keepFlow && !seqOf().includes(k)){const f=FLOWS.find(f=>f[2].includes(k)); if(f){flow=f[0]; fsel.value=flow;}}
+ cur=k; $$('.pt-toast').forEach(t=>{if(Date.now()-(+t.dataset.t)>1800)t.remove();});
+ $$('.pt-wrap').forEach(w=>{const on=w.dataset.k===k;w.classList.toggle('cur',on);w.style.display=on?'block':'none';w.querySelector('.pscreen').classList.toggle('show',on);});
+ renderSteps(); $('#hint').innerHTML=HINT[k]||''; const seq=seqOf(), i=seq.indexOf(k);
+ $('#prev').disabled = hist.length===0; const nx=$('#next'); const last=i===seq.length-1; nx.textContent= last?'Ulangi':'Berikutnya';
+ const side=$('#side'); if(SIDE[k]){side.style.display='flex';$('#sideR').textContent=SIDE[k][0];$('#sideT').textContent=SIDE[k][1];const sb=$('#sideB');
+   if(SIDEBTN[k]){sb.style.display='block';sb.textContent=SIDEBTN[k][0];sb.onclick=()=>go(SIDEBTN[k][1]);} else sb.style.display='none';} else side.style.display='none';
+ $$('.attn').forEach(e=>e.classList.remove('attn')); const a=document.querySelector('.pt-wrap.cur [data-act]'); if(a) a.classList.add('attn');
+ if(k==='masuk'){resetStates();hist=[];$('#prev').disabled=true;}
+ try{ if(location.hash.slice(1)!==k) history.replaceState(null,'','#'+k);}catch(e){}
+ layout(); }
+function back(){ if(!hist.length) return; go(hist.pop(),{back:true}); }
+$('#prev').onclick=back;
+$('#next').onclick=()=>{const seq=seqOf(),i=seq.indexOf(cur); if(i===seq.length-1){hist=[];go(seq[0],{keepFlow:true});return;} go(seq[i<0?0:i+1],{keepFlow:true});};
+$('#brand').onclick=()=>{flow='utama';fsel.value='utama';go('masuk');};
+// mobile back buttons
+$$('.pscreen .wah, .pscreen .mh:not(.lgm-h)').forEach(h=>{const b=document.createElement('div');b.className='mback';b.textContent=h.classList.contains('wah')?'‹':'‹ Kembali';b.onclick=e=>{e.stopPropagation();back();};h.appendChild(b);});
+document.addEventListener('click',e=>{
+ const role=e.target.closest('[data-role]'); if(role){flow='utama';fsel.value='utama';go({sppg:'login-sppg',koperasi:'login-koperasi',penyuluh:'login-penyuluh',dinas:'login-dinas',petani:'wa-tawaran'}[role.dataset.role]);return;}
+ if(e.target.closest('[data-go="demo"]')){go('login-sppg');return;}
+ const g=e.target.closest('[data-goto],[data-toast]'); if(g && g.closest('.pscreen')){ if(g.dataset.toast) toast(g.dataset.toast); if(g.dataset.goto){ timer=setTimeout(()=>go(g.dataset.goto), g.dataset.toast?1300:150);} return;}
+ const nav=e.target.closest('.nav'); if(nav){ if(nav.classList.contains('soon')){toast('Menu ini belum termasuk prototipe','info');return;} const t=nav.childNodes[0].textContent.trim(); if(NAVMAP[t]) go(NAVMAP[t]); else toast('Menu “'+t+'” belum termasuk prototipe','info'); return;}
+ if(e.target.closest('.pscreen .logo')){flow='utama';fsel.value='utama';go('masuk');return;}
+ const ck=e.target.closest('[data-ck]'); if(ck){const b=ck.querySelector('.box'); const warn=b.classList.toggle('w'); b.textContent=warn?'!':'✓';
+   const n=$$('[data-ck] .box.w').length; $('#hasilMutu').textContent= n===0?'Hasil: Lolos':(n<=1?'Hasil: Lolos dengan catatan':'Hasil: Perlu sortir ulang'); return;}
+ const act=e.target.closest('[data-act]'); if(act){const a=act.dataset.act;
+  if(a==='proses'){toast('Proyeksi dihitung dari 22 hari menu · 2.000 porsi per hari');timer=setTimeout(()=>go('proyeksi'),900);}
+  else if(a==='kirim-koperasi'){toast('Proyeksi terkirim ke 2 koperasi mitra');setTimeout(()=>toast('Sisa 0,8 ton (wortel & sawi) diajukan sebagai pesanan di Loka MBG'),500);timer=setTimeout(()=>go('rencana-tanam'),2100);}
+  else if(a==='kirim-wa'){toast('Tawaran kontrak terkirim ke 4 kelompok tani via WhatsApp');timer=setTimeout(()=>go('wa-tawaran'),1300);}
+  else if(a==='balas-1'){timer=setTimeout(()=>go('wa-setuju'),250);}
+  else if(a==='simpan-mutu'){toast('Hasil cek mutu terkirim ke KDMP Sumber Makmur dan petani');timer=setTimeout(()=>go('penerimaan'),1600);}
+  else if(a==='konfirmasi'){const ps=$$('[data-pay]');ps.forEach(p=>{p.className='pill ok';p.textContent='Dibayar';});act.className='btn2';act.textContent='Penerimaan Dikonfirmasi';toast('Penerimaan dikonfirmasi · Rp3,9 jt dibayar via Loka MBG ke 2 koperasi');timer=setTimeout(()=>go('bayar-petani'),2300);}
+  else if(a==='teruskan'){const sw=$('#kopswi');sw.innerHTML='<span class="pill ok">Ditransfer 6 Jan</span>';$('#kopv').textContent='Rp2,78 jt';$('#kopn').textContent='2 dari 2 kontrak';act.className='btn2';act.textContent='Semua Sudah Diteruskan';toast('Rp750.000 ditransfer ke Poktan Sumber Rejeki · kabar terkirim via WhatsApp');timer=setTimeout(()=>go('wa-bayar'),2300);}
+  return;}
+ const b=e.target.closest('.pscreen .btn, .pscreen .btn2, .pscreen .chip'); if(b){toast('“'+b.textContent.trim()+'” adalah contoh di prototipe ini','info');}
+});
+addEventListener('keydown',e=>{if(e.key==='ArrowRight')$('#next').click(); if(e.key==='ArrowLeft')back();});
+addEventListener('resize',layout); addEventListener('hashchange',()=>{const h=location.hash.slice(1); if(h&&h!==cur) go(h);});
+go(location.hash.slice(1)||'masuk');
+</script></body></html>
